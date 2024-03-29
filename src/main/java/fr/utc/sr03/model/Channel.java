@@ -2,6 +2,7 @@ package fr.utc.sr03.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
 
 public class Channel {
     private int id;
@@ -9,7 +10,7 @@ public class Channel {
     private String title, description;
     private Date date, duration;
     private User creator;
-    private ArrayList<User> members;
+    private Hashtable<Integer, User> members = new Hashtable<Integer, User>();
     private static int autoIncrement = 0;
     public static int getAutoIncrement() {
         return autoIncrement;
@@ -96,11 +97,11 @@ public class Channel {
         this.creator = creator;
     }
 
-    public ArrayList<User> getMembers() {
+    public Hashtable<Integer,User> getMembers() {
         return members;
     }
 
-    public void setMembers(ArrayList<User> members) {
+    public void setMembers(Hashtable<Integer, User> members) {
         this.members = members;
     }
 

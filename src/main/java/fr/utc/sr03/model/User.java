@@ -2,6 +2,7 @@ package fr.utc.sr03.model;
 
 
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.Objects;
 
 public class User {
@@ -19,10 +20,11 @@ public class User {
     private String password;
 
     private boolean admin;
-    
+
+    private Hashtable<Integer, Channel> invitations = new Hashtable<Integer, Channel>();
     //Constructor
 
-    public void User(String firstName, String lastName, String email, String password, boolean admin){
+    public User(String firstName, String lastName, String email, String password, boolean admin){
         autoIncrement++;
         this.id = getAutoIncrement();
         this.firstName = firstName;
@@ -77,6 +79,17 @@ public class User {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    public int getId() {
+        return id;
+    }
+    public Hashtable<Integer, Channel> getInvitations() {
+        return invitations;
+    }
+
+    public void setInvitations(Hashtable<Integer, Channel> invitations) {
+        this.invitations = invitations;
     }
 
     //Equals & Hash
