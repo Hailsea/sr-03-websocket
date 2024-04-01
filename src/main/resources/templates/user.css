@@ -1,0 +1,8 @@
+main {
+    margin-left: 25%;
+    min-height: calc(100vh - 80px - 85px);
+}
+
+#Channel, #Invitations {
+    display: none;
+}
