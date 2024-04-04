@@ -23,6 +23,20 @@ public class ServicesRequest {
         em.persist(user);
     }
 
+    public void updateUser(Users user){
+        em.merge(user);
+    }
+
+    public Users getOneUser(int id){
+        //return un user via la clé primaire
+        return em.find(Users.class, id);
+    }
+
+    public void deleteOneUser(int id){
+        //return un user via la clé primaire
+        em.remove(em.find(Users.class, id));
+    }
+
     @SuppressWarnings("unchecked")
     public List<Users> getUsers(){
         Query q = em.createQuery("select u from Users u");
