@@ -10,7 +10,7 @@ body {
 }
 
 main {
-    height: 80%;
+    height: 90%;
     margin-left: 25%;
 }
 
@@ -18,6 +18,20 @@ footer {
     flex-shrink: 0;
 }
 
-#Channel, #Invitations, #Mychat {
+
+
+.MessageBox {
+    max-height: 60vh;
+    overflow: auto;
+}
+
+.margin_right_25 {
+    margin-left: 0;
+    margin-right: 25%;
+}
+
+
+
+#Channel, #Invitations, #Mychat, #NewUser, #PastUser {
     display: none;
 }
