@@ -17,16 +17,16 @@ public class ApiController {
     private ServicesRequest servicesRequest;
 
 
-//    @PostMapping(value = "/create")
-//    public void create(){
-//
-//
-//        Users user = new Users();
-//        user.setFirstname("Cédric");
-//        user.setLastname("Martinet");
-//        user.setMail("cedric.martinet@utc.fr");
-//        servicesRequest.addUser(user);
-//    }
+    @PostMapping(value = "/create")
+    public void create(){
+
+
+        Users user = new Users();
+        user.setFirstname("Cédric");
+        user.setLastname("Martinet");
+        user.setMail("cedric.martinet@utc.fr");
+        servicesRequest.addUser(user);
+    }
 
     @GetMapping(value = "/liste")
     public List<Users> getUsers(){
