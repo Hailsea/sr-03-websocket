@@ -1,39 +1,56 @@
 package fr.utc.sr03.model;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Hashtable;
 
+@Entity
+@Table(name = "channels")
 public class Channel {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private int id;
+
+    @Column(name = "activated")
     private boolean activated;
-    private String title, description;
-    private Date date, duration;
+
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "date")
+    private Date date;
+
+    @Column(name = "duration")
+    private Date duration;
+
+    @OneToOne(mappedBy = "id") //To verify
     private User creator;
-    private Hashtable<Integer, User> members = new Hashtable<Integer, User>();
-    private static int autoIncrement = 0;
-    public static int getAutoIncrement() {
-        return autoIncrement;
-    }
+
+    @OneToMany(mappedBy = "id")
+    private ArrayList<User> members = new ArrayList<>();
     
     // Constructors
     public Channel(String newTitle, Date newdate, Date newDuration) {
-        autoIncrement ++;
         this.title = newTitle;
         this.date = newdate ;
         this.duration = newDuration ;
         this.activated = true ;
-        this.id = autoIncrement ;
     }
 
     public Channel(String newTitle, Date newdate, Date newDuration, String newDescription) {
-        autoIncrement ++;
         this.title = newTitle;
         this.date = newdate ;
         this.duration = newDuration ;
         this.activated = true ;
         this.description = newDescription;
-        this.id = autoIncrement ;
     }
 
     // Getters and Setters
@@ -79,10 +96,6 @@ public class Channel {
 
     public void setDuration(Date duration) {
         this.duration = duration;
-    }
-
-    public static void setAutoIncrement(int autoIncrement) {
-        Channel.autoIncrement = autoIncrement;
     }
 
     public void setId(int id) {

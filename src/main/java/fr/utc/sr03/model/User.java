@@ -1,32 +1,41 @@
 package fr.utc.sr03.model;
 
 
+import jakarta.persistence.*;
+
+import javax.annotation.processing.Generated;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Objects;
 
+@Entity
+@Table(name = "users")
 public class User {
 
     //Attributes
-    private static int autoIncrement = 0;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private int id;
 
+    @Column(name="firstname")
     private String firstName;
-
+    @Column(name="lastname")
     private String lastName;
 
+    @Column(name="email")
     private String email;
 
+    @Column(name="password")
     private String password;
 
+    @Column(name="admin")
     private boolean admin;
 
-    private Hashtable<Integer, Channel> invitations = new Hashtable<Integer, Channel>();
     //Constructor
+    public User(){}
 
     public User(String firstName, String lastName, String email, String password, boolean admin){
-        autoIncrement++;
-        this.id = getAutoIncrement();
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -34,12 +43,7 @@ public class User {
         this.admin = admin;
     }
 
-
     //Getters & Setters
-
-    public static int getAutoIncrement() {
-        return autoIncrement;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -83,13 +87,6 @@ public class User {
 
     public int getId() {
         return id;
-    }
-    public Hashtable<Integer, Channel> getInvitations() {
-        return invitations;
-    }
-
-    public void setInvitations(Hashtable<Integer, Channel> invitations) {
-        this.invitations = invitations;
     }
 
     //Equals & Hash
