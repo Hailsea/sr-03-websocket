@@ -1,6 +1,7 @@
 package fr.utc.sr03.services;
 
 
+import fr.utc.sr03.model.Channel;
 import fr.utc.sr03.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -8,6 +9,7 @@ import jakarta.persistence.Query;
 import org.springframework.stereotype.Repository;
 import jakarta.transaction.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -42,9 +44,4 @@ public class ServicesRequest {
         Query q = em.createQuery("select u FROM User u");
         return q.getResultList();
     }
-
-
-
-
-
 }

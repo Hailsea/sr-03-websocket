@@ -2,10 +2,7 @@ package fr.utc.sr03.model;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Hashtable;
+import java.util.*;
 
 @Entity
 @Table(name = "channels")
@@ -13,7 +10,7 @@ public class Channel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name="channel_id")
     private int id;
 
     @Column(name = "activated")
@@ -31,11 +28,17 @@ public class Channel {
     @Column(name = "duration")
     private Date duration;
 
-    @OneToOne(mappedBy = "id") //To verify
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User creator;
 
-    @OneToMany(mappedBy = "id")
-    private ArrayList<User> members = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    @JoinTable(
+            name = "membership",
+            joinColumns = { @JoinColumn(name = "channel_id") },
+            inverseJoinColumns = { @JoinColumn(name = "user_id") }
+    )
+    private Set<User> members = new HashSet<>();
     
     // Constructors
     public Channel(String newTitle, Date newdate, Date newDuration) {
@@ -51,6 +54,10 @@ public class Channel {
         this.duration = newDuration ;
         this.activated = true ;
         this.description = newDescription;
+    }
+
+    public Channel() {
+
     }
 
     // Getters and Setters
@@ -110,11 +117,11 @@ public class Channel {
         this.creator = creator;
     }
 
-    public Hashtable<Integer,User> getMembers() {
+    public Set<User> getMembers() {
         return members;
     }
 
-    public void setMembers(Hashtable<Integer, User> members) {
+    public void setMembers(Set<User> members) {
         this.members = members;
     }
 

@@ -1,0 +1,30 @@
+DROP TABLE IF EXISTS users CASCADE ;
+DROP TABLE IF EXISTS  channels CASCADE ;
+DROP TABLE  IF EXISTS membership CASCADE ;
+
+CREATE TABLE users (
+                       user_id SERIAL PRIMARY KEY,
+                       firstName VARCHAR(50),
+                       lastName VARCHAR(50),
+                       email VARCHAR(100),
+                       password VARCHAR(100),
+                       admin BOOLEAN
+);
+
+CREATE TABLE channels (
+                          channel_id SERIAL PRIMARY KEY,
+                          activated BOOLEAN,
+                          title VARCHAR(100),
+                          description VARCHAR(100),
+                          date DATE,
+                          duration DATE
+);
+
+CREATE TABLE membership(
+                           user_id SERIAL,
+                           channel_id SERIAL,
+                           PRIMARY KEY (user_id, channel_id),
+                           CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(user_id),
+                           CONSTRAINT fk_channel FOREIGN KEY(channel_id) REFERENCES channels(channel_id)
+
+);

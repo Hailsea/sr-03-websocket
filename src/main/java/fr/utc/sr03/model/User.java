@@ -4,9 +4,7 @@ package fr.utc.sr03.model;
 import jakarta.persistence.*;
 
 import javax.annotation.processing.Generated;
-import java.util.Date;
-import java.util.Hashtable;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -15,7 +13,7 @@ public class User {
     //Attributes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name="user_id")
     private int id;
 
     @Column(name="firstname")
