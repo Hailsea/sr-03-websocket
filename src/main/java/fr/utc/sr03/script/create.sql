@@ -17,7 +17,9 @@ CREATE TABLE channels (
                           title VARCHAR(100),
                           description VARCHAR(100),
                           date DATE,
-                          duration DATE
+                          duration DATE,
+                          creator_id INTEGER,
+                          CONSTRAINT fk_creator FOREIGN KEY(creator_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE membership(

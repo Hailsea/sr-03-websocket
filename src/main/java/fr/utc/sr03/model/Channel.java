@@ -29,7 +29,7 @@ public class Channel {
     private Date duration;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "creator_id", referencedColumnName = "user_id",nullable = false)
     private User creator;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
