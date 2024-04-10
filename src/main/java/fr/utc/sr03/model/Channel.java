@@ -34,11 +34,16 @@ public class Channel {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
     @JoinTable(
-            name = "membership",
+            name = "memberships",
             joinColumns = { @JoinColumn(name = "channel_id") },
             inverseJoinColumns = { @JoinColumn(name = "user_id") }
     )
     private Set<User> members = new HashSet<>();
+
+
+    //mappedBy => the channel attribute of the Invitation class is in charge of the relationship
+    @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Invitation> invitations = new HashSet<>();
     
     // Constructors
     public Channel(String newTitle, Date newdate, Date newDuration) {
@@ -125,9 +130,18 @@ public class Channel {
         this.members = members;
     }
 
-    // Manage members of the channel, addMember and removeMember
+    public Set<Invitation> getInvitations() {
+        return invitations;
+    }
 
-    // Boiler plate
+    public void setInvitations(Set<Invitation> invitations) {
+        this.invitations = invitations;
+    }
+
+    //Equals & Hash
+
+    //Methods
+
     @Override
     public String toString() {
         return "Channel id : " + id + ", title: " + title + " activated: " + activated + " Date :" + date + " Duration: " + duration;

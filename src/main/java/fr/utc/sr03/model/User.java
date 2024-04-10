@@ -102,5 +102,4 @@ public class User {
 
 
     //Methods
-    //TO CREATE LATER
 }
