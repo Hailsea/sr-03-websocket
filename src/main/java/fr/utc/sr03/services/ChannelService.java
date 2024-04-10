@@ -47,7 +47,7 @@ public class ChannelService {
     }
 
 
-    //Methods
+    //Other operations
 
     public List<Channel> getChannels() {
         Query q = em.createQuery("select c FROM Channel c");
