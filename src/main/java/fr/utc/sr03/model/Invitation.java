@@ -23,11 +23,12 @@ public class Invitation {
     @JoinColumn(name = "channel_id", referencedColumnName = "channel_id", nullable = false)
     private Channel channel;
 
+
+
     // Constructors, getters, setters
 
 
-    public Invitation(int id, User inviter, User invited, Channel channel) {
-        this.id = id;
+    public Invitation(User inviter, User invited, Channel channel) {
         this.inviter = inviter;
         this.invited = invited;
         this.channel = channel;

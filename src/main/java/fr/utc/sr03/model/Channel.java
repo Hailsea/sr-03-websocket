@@ -40,10 +40,6 @@ public class Channel {
     )
     private Set<User> members = new HashSet<>();
 
-
-    //mappedBy => the channel attribute of the Invitation class is in charge of the relationship
-    @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Invitation> invitations = new HashSet<>();
     
     // Constructors
     public Channel(String newTitle, Date newdate, Date newDuration) {
@@ -130,20 +126,13 @@ public class Channel {
         this.members = members;
     }
 
-    public Set<Invitation> getInvitations() {
-        return invitations;
-    }
-
-    public void setInvitations(Set<Invitation> invitations) {
-        this.invitations = invitations;
-    }
-
-    //Equals & Hash
-
     //Methods
-
     @Override
     public String toString() {
         return "Channel id : " + id + ", title: " + title + " activated: " + activated + " Date :" + date + " Duration: " + duration;
+    }
+
+    public void addMember(User user) {
+        this.members.add(user);
     }
 }
