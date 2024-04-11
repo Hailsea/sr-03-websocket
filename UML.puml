@@ -1,0 +1,92 @@
+@startuml
+
+
+
+class User {
+        - id: int
+        - firstName: String
+        - lastName: String
+        - email: String
+        - password: String
+        - admin: boolean
+
+        + User()
+        + User(String, String, String, String, boolean)
+        + getFirstName(): String
+        + setFirstName(String): void
+        + getLastName(): String
+        + setLastName(String): void
+        + getEmail(): String
+        + setEmail(String): void
+        + getPassword(): String
+        + setPassword(String): void
+        + isAdmin(): boolean
+        + setAdmin(boolean): void
+        + getId(): int
+        + equals(Object): boolean
+        + hashCode(): int
+}
+
+
+
+class Channel
+{
+        - id: int
+        - activated: boolean
+        - title: String
+        - description: String
+        - date: Date
+        - duration: Date
+        - creator: User
+        - members: Set<User>
+
+        + Channel(String, Date, Date)
+        + Channel(String, Date, Date, String)
+        + Channel()
+        + getId(): int
+        + isActivated(): boolean
+        + setActivated(boolean): void
+        + getTitle(): String
+        + setTitle(String): void
+        + getDescription(): String
+        + setDescription(String): void
+        + getDate(): Date
+        + setDate(Date): void
+        + getDuration(): Date
+        + setDuration(Date): void
+        + setId(int): void
+        + getCreator(): User
+        + setCreator(User): void
+        + getMembers(): Set<User>
+        + setMembers(Set<User>): void
+        + toString(): String
+        + addMember(User): void
+}
+
+
+class Invitation {
+        - id: int
+        - inviter: User
+        - invited: User
+        - channel: Channel
+
+        + Invitation(User, User, Channel)
+        + Invitation()
+        + getId(): int
+        + setId(int): void
+        + getInviter(): User
+        + setInviter(User): void
+        + getInvited(): User
+        + setInvited(User): void
+        + getChannel(): Channel
+        + setChannel(Channel): void
+}
+
+User --> User : (if admin) Add/Remove
+User --> Channel : (if admin) Activate/Disable
+User --o Channel : creates, joins, leaves
+User --o Invitation : sends, receives
+Channel --o Invitation : is concerned by
+
+
+@enduml
