@@ -22,9 +22,9 @@ public class ApiController {
 
 
         Users user = new Users();
-        user.setFirstname("Cédric");
-        user.setLastname("Martinet");
-        user.setMail("cedric.martinet@utc.fr");
+        user.setFirstname("Esther");
+        user.setLastname("Fabre");
+        user.setMail("esther.fabre@utc.fr");
         servicesRequest.addUser(user);
     }
 
