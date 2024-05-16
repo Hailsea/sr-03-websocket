@@ -2,6 +2,7 @@ package fr.utc.sr03.controller;
 
 
 import fr.utc.sr03.model.Users;
+import fr.utc.sr03.services.JakartaEmail;
 import fr.utc.sr03.services.ServicesRequest;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,12 @@ public class ApiController {
     @GetMapping(value = "/liste")
     public List<Users> getUsers(){
         return servicesRequest.getUsers();
+    }
+
+    @GetMapping(value = "/testmail")
+    public void sendMail(){
+        JakartaEmail jakartaEmail = new JakartaEmail();
+        jakartaEmail.sendMail();
     }
 
 
