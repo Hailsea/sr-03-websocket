@@ -15,3 +15,4 @@ public class WebSocketConfig implements WebSocketConfigurer {
         registry.addHandler(new WebSocketHandler(" salon SR03"), "/salon").setAllowedOrigins("*");
     }
 }
+

@@ -17,8 +17,6 @@ public class ServicesRequest {
     @PersistenceContext
     EntityManager em;
 
-
-
     public void addUser(Users user){
         em.persist(user);
     }
