@@ -9,15 +9,12 @@ import java.util.Properties;
 
 public class JakartaEmail {
 
-
-
     public JakartaEmail() {
     }
 
-
     public void sendMail(){
         String to = "cedric.martinet@utc.fr";
-        String from = "3333@utc.fr";
+        String from = "nepasrepondre@utc.fr";
         String host = "smtp1.utc.fr";
 
         Properties props = new Properties();
@@ -31,7 +28,7 @@ public class JakartaEmail {
             message.setFrom(new InternetAddress(from));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
             message.setSubject("Sujet");
-            message.setContent("Contenu", "text/html");
+            message.setContent("Contenu du mail", "text/html");
             Transport.send(message);
         } catch (MessagingException e) {
             System.out.println(e.toString());
