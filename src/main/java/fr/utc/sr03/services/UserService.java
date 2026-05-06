@@ -1,6 +1,7 @@
 package fr.utc.sr03.services;
 
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import fr.utc.sr03.model.User;
 import fr.utc.sr03.repository.UserRepository;
 import jakarta.annotation.Resource;
@@ -16,6 +17,9 @@ public class UserService {
 
     // CREATE or UPDATE
     public void saveUser(User user) {
+        String bcryptHashString = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
+        // BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), bcryptHashString);
+        user.setPassword(bcryptHashString);
         userRepository.save(user);
     }
 
