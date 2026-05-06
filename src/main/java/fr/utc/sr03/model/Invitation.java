@@ -13,6 +13,9 @@ public class Invitation {
     @Column(name="date_invitation", nullable = false)
     private LocalDateTime dateInvitation;
 
+    @Column(name="state_invitation")
+    private Boolean stateInitation;
+
     @ManyToOne
     @MapsId("idUser")
     @JoinColumn(name="id_user")

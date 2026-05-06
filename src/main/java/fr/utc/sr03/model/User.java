@@ -25,10 +25,10 @@ public class User {
     private String password;
 
     @Column(name="is_admin", nullable = false)
-    private Boolean isAdmin;
+    private Boolean isAdmin = false;
 
     @Column(name="is_alive", nullable = false)
-    private Boolean isAlive;
+    private Boolean isAlive = false;
 
     @ManyToMany
     @JoinTable(
@@ -41,8 +41,7 @@ public class User {
     public User() {
     }
 
-    public User(int id, String firstname, String lastname, String email, String password, Boolean isAdmin, Boolean isAlive, List<Channel> channels) {
-        this.id = id;
+    public User(String firstname, String lastname, String email, String password, Boolean isAdmin, Boolean isAlive, List<Channel> channels) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
