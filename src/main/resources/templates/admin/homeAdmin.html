@@ -9,6 +9,12 @@
 <body>
     <header th:replace="~{fragments/adminHeader.html :: adminHeader}"></header>
 
+<!--    <div class="popup">-->
+<!--        <a>-->
+<!--            <p th:text="${popupMessage}">Default Name</p>-->
+<!--        </a>-->
+<!--    </div>-->
+
     <main class="container">
         <div class="row mb-4">
             <div class="col-sm-12 text-sm-end">
@@ -18,24 +24,31 @@
 
         <div class="row">
             <div class="col-12">
-                <table class="table table-striped table-hover">
-                    <thead class="table-dark">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Prénom</th>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Mail</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="user : ${allUsers}">
-                        <th th:text="${user.getId()}" scope="row"></th>
-                        <td th:text="${user.getFirstname()}"></td>
-                        <td th:text="${user.getLastname()}"></td>
-                        <td th:text="${user.getEmail()}"></td>
-                    </tr>
-                    </tbody>
-                </table>
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Prénom</th>
+                            <th scope="col">Nom</th>
+                            <th scope="col">Mail</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user : ${allUsers}">
+                            <th th:text="${user.getId()}" scope="row"></th>
+                            <td th:text="${user.getFirstname()}"></td>
+                            <td th:text="${user.getLastname()}"></td>
+                            <td th:text="${user.getEmail()}"></td>
+                            <td>
+                                <form th:action="@{/admin/deleteuser}" th:method="POST">
+                                    <input type="hidden" name="idUser" id="idUser" th:value="${user.id}">
+                                    <button type="submit">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
             </div>
         </div>
     </main>

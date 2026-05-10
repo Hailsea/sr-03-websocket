@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Console;
 import java.util.List;
 
 @Controller
@@ -20,8 +21,31 @@ public class WebController {
     @GetMapping("/")
     public String homeAdmin(Model model) {
         List<User> users = userService.getAllUsers();
+        model.addAttribute("popupMessage", users);
         model.addAttribute("allUsers", users);
         return "admin/homeAdmin";
+    }
+
+    @GetMapping("/{warning}")
+    public String homeAdmin(Model model, @PathVariable String warning) {
+        List<User> users = userService.getAllUsers();
+        model.addAttribute("popupMessage", warning);
+        model.addAttribute("allUsers", users);
+        return "admin/homeAdmin";
+    }
+
+    @GetMapping("/test")
+    public String test(){
+        System.out.println(userService.checkPasswordFormat("test"));
+        System.out.println(userService.checkPasswordFormat("etestT13"));
+        System.out.println(userService.checkPasswordFormat("etes.tT13"));
+        System.out.println(userService.checkPasswordFormat("et.T13"));
+        System.out.println(userService.checkEmailFormat("this@ot.fr"));
+        System.out.println(userService.checkEmailFormat(".this@ot.fr"));
+        System.out.println(userService.checkEmailFormat("this.is.me@ot.fr"));
+        System.out.println(userService.checkEmailFormat("this.is.me.@something.absurd"));
+        System.out.println(userService.checkEmailFormat("this.is.me@something.com"));
+        return "redirect:/admin/";
     }
 
     @GetMapping("/user/{idUser}")
@@ -31,23 +55,31 @@ public class WebController {
 
     @GetMapping("/adduser")
     public String formAddUser(){
-        return "formAddUser";
+        return "admin/formAddUser";
     }
 
     @PostMapping("/adduser")
     public String createUser(@ModelAttribute User user) {
+        switch (userService.saveUser(user)){
+            case -1:
+                return "redirect:/admin/warning?=Mail_invalide";
+            case -2:
+                return "redirect:/admin/warning?=Password_invalide";
+            default:
+                return "redirect:/admin/";
+        }
+    }
+
+    @PostMapping("/edituser")
+    public String editUser(@ModelAttribute User user) {
         userService.saveUser(user);
         return "redirect:/admin/";
     }
 
-    @PostMapping("/edituser")
-    public void editUser(@ModelAttribute User user) {
-        userService.saveUser(user);
-    }
-
     @PostMapping("/deleteuser")
-    public void deleteUser(@RequestParam int id){
-        userService.deleteUser(id);
+    public String deleteUser(@RequestParam int idUser){
+        userService.deleteUser(idUser);
+        return "redirect:/admin/";
     }
 
 }
