@@ -5,15 +5,22 @@
     <title>Title</title>
 </head>
 <body>
-<form action="/admin/adduser" method="POST">
+
+<div class="popup">
+    <a>
+        <p th:text="${popupMessage}">Default Name</p>
+    </a>
+</div>
+
+<form th:action="@{/admin/adduser}" th:object="${User}" method="POST">
     <label for="firstname">Firstname</label>
-    <input type="text" name="firstname" id="firstname" required>
+    <input type="text" name="firstname" id="firstname" th:field="*{firstname}" required>
 
     <label for="lastname">Lastname</label>
-    <input type="text" name="lastname" id="lastname" required>
+    <input type="text" name="lastname" id="lastname" th:field="*{lastname}" required>
 
     <label for="email">Email</label>
-    <input type="text" placeholder="Enter Email" name="email" id="email" required>
+    <input type="text" placeholder="Enter Email" name="email" id="email" th:field="*{email}" required>
 
     <label for="password">Password</label>
     <input type="password" placeholder="Enter Password" name="password" id="password" required>

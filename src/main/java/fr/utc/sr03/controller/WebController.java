@@ -54,17 +54,22 @@ public class WebController {
     }
 
     @GetMapping("/adduser")
-    public String formAddUser(){
+    public String formAddUser(Model model){
+        model.addAttribute("User",new User());
         return "admin/formAddUser";
     }
 
     @PostMapping("/adduser")
-    public String createUser(@ModelAttribute User user) {
+    public String createUser(Model model, @ModelAttribute User user) {
         switch (userService.saveUser(user)){
             case -1:
-                return "redirect:/admin/warning?=Mail_invalide";
+                model.addAttribute("popupMessage", "Mail invalide");
+                model.addAttribute("User", user);
+                return "/admin/formAddUser";
             case -2:
-                return "redirect:/admin/warning?=Password_invalide";
+                model.addAttribute("popupMessage", "Mot de passe invalide : doit contenir au minimum une majuscule, une minuscule, un chiffre, un caractère spécial et 8 caractères minimum");
+                model.addAttribute("User", user);
+                return "/admin/formAddUser";
             default:
                 return "redirect:/admin/";
         }
