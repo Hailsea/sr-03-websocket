@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.utc.dsi.pia</groupId>
-    <artifactId>Devoir2</artifactId>
+    <artifactId>db_sr03</artifactId>
     <version>1.0.0</version>
 
 
@@ -79,8 +79,11 @@
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
-
-
+        <dependency>
+            <groupId>at.favre.lib</groupId>
+            <artifactId>bcrypt</artifactId>
+            <version>0.10.2</version>
+        </dependency>
 
     </dependencies>
 
