@@ -9,11 +9,7 @@
 <body>
     <header th:replace="~{fragments/adminHeader.html :: adminHeader}"></header>
 
-    <div class="popup">
-        <a>
-            <p th:text="${popupMessage}"></p>
-        </a>
-    </div>
+    <header th:replace="~{fragments/popup.html :: warningPopup}"></header>
 
     <main class="container">
         <div class="row mb-4">

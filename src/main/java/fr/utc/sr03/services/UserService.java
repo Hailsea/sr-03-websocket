@@ -20,7 +20,6 @@ public class UserService {
     // CREATE or UPDATE
     public int saveUser(User user) {
         String bcryptHashString = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
-        // BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), bcryptHashString);
         if (!checkEmailFormat(user.getEmail())){
             return -1;
         }

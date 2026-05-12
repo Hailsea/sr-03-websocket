@@ -6,11 +6,7 @@
 </head>
 <body>
 
-<div class="popup">
-    <a>
-        <p th:text="${popupMessage}"></p>
-    </a>
-</div>
+<header th:replace="~{fragments/popup.html :: warningPopup}"></header>
 
 <form th:action="@{/admin/adduser}" th:object="${User}" method="POST">
     <label for="firstname">Firstname</label>

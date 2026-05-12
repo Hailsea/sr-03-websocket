@@ -1,6 +1,7 @@
 package fr.utc.sr03.controller;
 
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import fr.utc.sr03.model.User;
 import fr.utc.sr03.services.UserService;
 import jakarta.annotation.Resource;
@@ -21,7 +22,7 @@ public class WebController {
     @GetMapping("/")
     public String homeAdmin(Model model) {
         List<User> users = userService.getAllUsers();
-        model.addAttribute("popupMessage", users);
+        model.addAttribute("popupMessage", "");
         model.addAttribute("allUsers", users);
         return "admin/homeAdmin";
     }
@@ -36,15 +37,8 @@ public class WebController {
 
     @GetMapping("/test")
     public String test(){
-        System.out.println(userService.checkPasswordFormat("test"));
-        System.out.println(userService.checkPasswordFormat("etestT13"));
-        System.out.println(userService.checkPasswordFormat("etes.tT13"));
-        System.out.println(userService.checkPasswordFormat("et.T13"));
-        System.out.println(userService.checkEmailFormat("this@ot.fr"));
-        System.out.println(userService.checkEmailFormat(".this@ot.fr"));
-        System.out.println(userService.checkEmailFormat("this.is.me@ot.fr"));
-        System.out.println(userService.checkEmailFormat("this.is.me.@something.absurd"));
-        System.out.println(userService.checkEmailFormat("this.is.me@something.com"));
+        System.out.println(userService.getUserByEmailAddress("not existing"));
+        System.out.println(userService.getUserByEmailAddress("james.jame@gmail.com"));
         return "redirect:/admin/";
     }
 
@@ -86,6 +80,19 @@ public class WebController {
         userService.deleteUser(idUser);
         return "redirect:/admin/";
     }
+    @GetMapping(value="/login")
+    public String login(){
+        return "login.html";
+    }
 
+    @PostMapping(value="../login")
+    public String loginRequest(Model model, @RequestParam String email, String password){
+        User user=userService.getUserByEmailAddress(email);
+        if (user!=null && BCrypt.verifyer().verify(password.toCharArray(), user.getPassword()).verified){
+            return "redirect:/admin/";
+        }
+        model.addAttribute("popupMessage","Mail ou mot de passe invalide.");
+        return "login.html";
+    }
 }
 
