@@ -19,73 +19,17 @@ public class WebController {
     @Resource
     private UserService userService;
 
-    @GetMapping("/")
-    public String homeAdmin(Model model) {
-        List<User> users = userService.getAllUsers();
-        model.addAttribute("popupMessage", "");
-        model.addAttribute("allUsers", users);
-        return "admin/homeAdmin";
+    @GetMapping(value="/")
+    public String root(){
+        return "redirect:/login";
     }
 
-    @GetMapping("/{warning}")
-    public String homeAdmin(Model model, @PathVariable String warning) {
-        List<User> users = userService.getAllUsers();
-        model.addAttribute("popupMessage", warning);
-        model.addAttribute("allUsers", users);
-        return "admin/homeAdmin";
-    }
-
-    @GetMapping("/test")
-    public String test(){
-        System.out.println(userService.getUserByEmailAddress("not existing"));
-        System.out.println(userService.getUserByEmailAddress("james.jame@gmail.com"));
-        return "redirect:/admin/";
-    }
-
-    @GetMapping("/user/{idUser}")
-    public User userAccount(@PathVariable int idUser) {
-        return userService.getUserById(idUser);
-    }
-
-    @GetMapping("/adduser")
-    public String formAddUser(Model model){
-        model.addAttribute("User",new User());
-        return "admin/formAddUser";
-    }
-
-    @PostMapping("/adduser")
-    public String createUser(Model model, @ModelAttribute User user) {
-        switch (userService.saveUser(user)){
-            case -1:
-                model.addAttribute("popupMessage", "Mail invalide");
-                model.addAttribute("User", user);
-                return "/admin/formAddUser";
-            case -2:
-                model.addAttribute("popupMessage", "Mot de passe invalide : doit contenir au minimum une majuscule, une minuscule, un chiffre, un caractère spécial et 8 caractères minimum");
-                model.addAttribute("User", user);
-                return "/admin/formAddUser";
-            default:
-                return "redirect:/admin/";
-        }
-    }
-
-    @PostMapping("/edituser")
-    public String editUser(@ModelAttribute User user) {
-        userService.saveUser(user);
-        return "redirect:/admin/";
-    }
-
-    @PostMapping("/deleteuser")
-    public String deleteUser(@RequestParam int idUser){
-        userService.deleteUser(idUser);
-        return "redirect:/admin/";
-    }
     @GetMapping(value="/login")
     public String login(){
         return "login.html";
     }
 
-    @PostMapping(value="../login")
+    @PostMapping(value="/login")
     public String loginRequest(Model model, @RequestParam String email, String password){
         User user=userService.getUserByEmailAddress(email);
         if (user!=null && BCrypt.verifyer().verify(password.toCharArray(), user.getPassword()).verified){
