@@ -13,7 +13,6 @@ import java.io.Console;
 import java.util.List;
 
 @Controller
-@RequestMapping(value="/admin")
 public class WebController {
 
     @Resource
