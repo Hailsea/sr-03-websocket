@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login page</title>
+</head>
+<body>
+
+<header th:replace="~{fragments/popup.html :: warningPopup}"></header>
+
+<form th:action="@{/admin/login}" method="POST">
+    <label for="email">Email</label>
+    <input type="text" placeholder="Enter Email" name="email" id="email" required>
+
+    <label for="password">Password</label>
+    <input type="password" placeholder="Enter Password" name="password" id="password" required>
+
+    <button type="submit">Register</button>
+</form>
+
+</body>
+</html>

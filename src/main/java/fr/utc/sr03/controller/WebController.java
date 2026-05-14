@@ -1,6 +1,7 @@
 package fr.utc.sr03.controller;
 
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import fr.utc.sr03.model.User;
 import fr.utc.sr03.services.UserService;
 import jakarta.annotation.Resource;
@@ -17,7 +18,11 @@ public class WebController {
     @Resource
     private UserService userService;
 
-    @GetMapping("/")
+    @GetMapping(value="/")
+    public String root(){
+        return "redirect:/login";
+
+    @GetMapping("/home")
     public String homeAdmin(Model model) {
         List<User> users = userService.getAllUsers();
         model.addAttribute("allUsers", users);
@@ -30,6 +35,10 @@ public class WebController {
         model.addAttribute("user", user);
         return "admin/profilUser";
     }
+
+    @GetMapping(value="/login")
+    public String login(){
+        return "login.html";
 
     @GetMapping("/adduser")
     public String formAddUser(){
@@ -53,6 +62,14 @@ public class WebController {
     public String editUser(@ModelAttribute User user) {
         userService.updateUser(user);
         return "redirect:/admin/";
+    @PostMapping(value="/login")
+    public String loginRequest(Model model, @RequestParam String email, String password){
+        User user=userService.getUserByEmailAddress(email);
+        if (user!=null && BCrypt.verifyer().verify(password.toCharArray(), user.getPassword()).verified){
+            return "redirect:/admin/";
+        }
+        model.addAttribute("popupMessage","Mail ou mot de passe invalide.");
+        return "login.html";
     }
 
     @PostMapping("/deleteuser")

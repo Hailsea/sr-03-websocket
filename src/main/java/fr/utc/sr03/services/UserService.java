@@ -6,6 +6,8 @@ import fr.utc.sr03.model.User;
 import fr.utc.sr03.repository.UserRepository;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import java.util.List;
 
@@ -15,12 +17,19 @@ public class UserService {
     @Resource
     private UserRepository userRepository;
 
-    // CREATE
-    public void saveUser(User user) {
+    {
+    // CREATE or UPDATE
+    public int saveUser(User user) {
         String bcryptHashString = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
-        // BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), bcryptHashString);
+        if (!checkEmailFormat(user.getEmail())){
+            return -1;
+        }
+        if (!checkPasswordFormat(user.getPassword())){
+            return -2;
+        }
         user.setPassword(bcryptHashString);
         userRepository.save(user);
+        return user.getId();
     }
 
     // UPDATE
@@ -33,7 +42,6 @@ public class UserService {
     // READ
     public User getUserById(int id) {
         return userRepository.findById(id).orElse(null);
-
     }
     public User getUserByEmailAddress(String emailAddress) {return userRepository.findByEmailAddress(emailAddress);}
 
@@ -46,4 +54,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public boolean checkPasswordFormat(String password){return password.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W)(.{8,})");}
+
+    public boolean checkEmailFormat(String password){return password.matches("[a-zA-Z]\\w+(\\.\\w+)*@[a-zA-Z]+\\.[a-zA-Z]{1,3}");}
 }

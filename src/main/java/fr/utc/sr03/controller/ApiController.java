@@ -1,6 +1,7 @@
 package fr.utc.sr03.controller;
 
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import fr.utc.sr03.model.User;
 import fr.utc.sr03.services.JakartaEmail;
 import fr.utc.sr03.services.UserService;
@@ -15,7 +16,6 @@ public class ApiController {
 
     @Resource
     private UserService userService;
-
 
     @PostMapping(value = "/create")
     public void create(){
@@ -38,7 +38,6 @@ public class ApiController {
 
     @GetMapping(value = "/testmail")
     public void testmail(){
-
         //Test envoi Mail
         JakartaEmail jakartaEmail = new JakartaEmail();
         jakartaEmail.sendMail();
