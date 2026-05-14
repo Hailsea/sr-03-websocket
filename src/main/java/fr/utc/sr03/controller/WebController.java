@@ -24,14 +24,16 @@ public class WebController {
         return "admin/homeAdmin";
     }
 
-    @GetMapping("/user/{idUser}")
-    public User userAccount(@PathVariable int idUser) {
-        return userService.getUserById(idUser);
+    @GetMapping("/user/{id}")
+    public String user(@PathVariable int id, Model model){
+        User user = userService.getUserById(id);
+        model.addAttribute("user", user);
+        return "admin/profilUser";
     }
 
     @GetMapping("/adduser")
     public String formAddUser(){
-        return "formAddUser";
+        return "admin/formAddUser";
     }
 
     @PostMapping("/adduser")
@@ -40,15 +42,22 @@ public class WebController {
         return "redirect:/admin/";
     }
 
-    @PostMapping("/edituser")
-    public void editUser(@ModelAttribute User user) {
-        userService.saveUser(user);
+    @GetMapping("/edituser/{id}")
+    public String userAccount(@PathVariable int id, Model model) {
+        User user = userService.getUserById(id);
+        model.addAttribute("user", user);
+        return "admin/formEditUser";
+    }
+
+    @PostMapping("/edituser/{id}")
+    public String editUser(@ModelAttribute User user) {
+        userService.updateUser(user);
+        return "redirect:/admin/";
     }
 
     @PostMapping("/deleteuser")
     public void deleteUser(@RequestParam int id){
         userService.deleteUser(id);
     }
-
 }
 

@@ -15,7 +15,7 @@ public class UserService {
     @Resource
     private UserRepository userRepository;
 
-    // CREATE or UPDATE
+    // CREATE
     public void saveUser(User user) {
         String bcryptHashString = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
         // BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), bcryptHashString);
@@ -23,9 +23,17 @@ public class UserService {
         userRepository.save(user);
     }
 
+    // UPDATE
+    public void updateUser(User user) {
+        User oldUser = getUserById(user.getId());
+        user.setPassword(oldUser.getPassword());
+        userRepository.save(user);
+    }
+
     // READ
     public User getUserById(int id) {
         return userRepository.findById(id).orElse(null);
+
     }
     public User getUserByEmailAddress(String emailAddress) {return userRepository.findByEmailAddress(emailAddress);}
 

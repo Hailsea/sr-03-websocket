@@ -1,0 +1,151 @@
+body {
+    background-color: #eab024;
+    font-family: monospace;
+    color: #333;
+    padding: 20px;
+}
+
+.card {
+    background-color: #f8f9fa;
+    padding: 2rem;
+    box-shadow: 6px 6px rgba(0,0,0,0.2);
+    margin: 0 auto;
+}
+
+.form-card {
+    max-width: 350px;
+}
+
+.table-card {
+    max-width: 1000px;
+}
+
+h2 {
+    font-size: 18px;
+    margin-bottom: 25px;
+    color: #333;
+    text-transform: uppercase;
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #333;
+    background: #fff;
+    font-family: monospace;
+    box-sizing: border-box;
+    outline: none;
+}
+
+input:focus {
+    background-color: #eab024;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+
+button, .button {
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    font-family: monospace;
+    font-size: 14px;
+    margin-top: 10px;
+    transition: 0.2s;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+    color: #fff;
+}
+.btn-classic {
+    background-color: #555; /* Gris foncé */
+}
+
+.btn-classic:hover {
+    background-color: #333;
+}
+
+.btn-update {
+    background-color: #2e7d32; /* Vert "système" */
+}
+
+.btn-update:hover {
+    background-color: #1b5e20;
+}
+
+.btn-add {
+    background-color: #0056b3; /* Bleu assez vif */
+}
+
+.btn-add:hover {
+    background-color: #004494;
+}
+
+/* TABLEAU */
+
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 3px solid #333;
+    padding-bottom: 1rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 2px solid #333;
+}
+
+th {
+    background: #333;
+    color: #fff;
+    padding: 15px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.9rem;
+}
+
+tr:hover { background-color: #eab024; }
+
+/* TITRE */
+.main-title {
+    max-width: 1000px;
+    margin: 0 auto 20px auto;
+    padding: 1rem 2rem 1rem 2rem;
+    border: 3px solid #333;
+    background-color: #333;
+    color: #eab024;
+}
+
+.main-title h1 {
+    margin: 0;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}

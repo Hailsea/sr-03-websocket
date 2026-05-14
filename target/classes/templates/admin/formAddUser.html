@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajout Utilisateur</title>
+    <link th:href="@{/style/style.css}" rel="stylesheet">
 </head>
 <body>
-<form action="/admin/adduser" method="POST">
-    <label for="firstname">Firstname</label>
-    <input type="text" name="firstname" id="firstname" required>
 
-    <label for="lastname">Lastname</label>
-    <input type="text" name="lastname" id="lastname" required>
+<header th:replace="~{fragments/adminHeader.html :: adminHeader}"></header>
 
-    <label for="email">Email</label>
-    <input type="text" placeholder="Enter Email" name="email" id="email" required>
+<main>
 
-    <label for="password">Password</label>
-    <input type="password" placeholder="Enter Password" name="password" id="password" required>
+    <div th:replace="~{fragments/userForm.html :: formCard(
+        title='Ajouter utilisateur',
+        actionUrl=@{/admin/adduser},
+        buttonText='Enregistrer',
+        buttonClass='btn-add')}">
+    </div>
 
-    <button type="submit">Register</button>
-</form>
+</main>
+
 </body>
 </html>

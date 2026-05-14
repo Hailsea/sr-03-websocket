@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utilisateur</title>
+    <link th:href="@{/style/style.css}" rel="stylesheet">
+</head>
+<body>
+
+<header th:replace="~{fragments/adminHeader.html :: adminHeader}"></header>
+
+<main>
+    <div class="card">
+
+        <h2>Détails de l'utilisateur #<span th:text="${user.id}"></span></h2>
+
+        <div class="input-group">
+            <label>Prénom</label>
+            <div th:text="${user.firstname}"></div>
+        </div>
+
+        <div class="input-group">
+            <label>Nom</label>
+            <div th:text="${user.lastname}"></div>
+        </div>
+
+        <div class="input-group">
+            <label>Mail</label>
+            <div th:text="${user.email}"></div>
+        </div>
+
+        <div class="input-group">
+            <label>Rôle</label>
+            <div th:text="${user.admin ? 'Administrateur' : 'Utilisateur'}"></div>
+        </div>
+
+        <div class="input-group">
+            <label>Statut</label>
+            <div th:text="${user.alive ? 'Actif' : 'Inactif'}"></div>
+        </div>
+
+        <div class="input-group">
+            <label>Canaux (Channels)</label>
+            <div>
+                <ul th:if="${!user.channels.isEmpty()}">
+                    <li th:each="channel : ${user.channels}" th:text="${channel.name}">Nom du channel</li>
+                </ul>
+                <span th:if="${user.channels.isEmpty()}">
+                    Aucun channel
+                </span>
+            </div>
+        </div>
+
+        <div class="button-group" style="margin-top: 25px;">
+            <a th:href="@{/admin/users}" class="button btn-classic">[ Retour ]</a>
+            <a th:href="@{/admin/edituser/{id}(id=${user.id})}" class="button btn-update">[ Modifier ]</a>
+        </div>
+
+    </div>
+</main>
+
+</body>
+</html>
