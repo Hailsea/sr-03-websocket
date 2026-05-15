@@ -17,16 +17,16 @@ public class UserService {
     @Resource
     private UserRepository userRepository;
 
-    {
     // CREATE or UPDATE
     public int saveUser(User user) {
-        String bcryptHashString = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
         if (!checkEmailFormat(user.getEmail())){
             return -1;
         }
         if (!checkPasswordFormat(user.getPassword())){
             return -2;
         }
+
+        String bcryptHashString = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
         user.setPassword(bcryptHashString);
         userRepository.save(user);
         return user.getId();
@@ -35,8 +35,23 @@ public class UserService {
     // UPDATE
     public void updateUser(User user) {
         User oldUser = getUserById(user.getId());
-        user.setPassword(oldUser.getPassword());
-        userRepository.save(user);
+        if (oldUser != null) {
+            oldUser.setLastname(user.getLastname());
+            oldUser.setFirstname(user.getFirstname());
+
+            if (user.getEmail() != null && checkEmailFormat(user.getEmail())) {
+                oldUser.setEmail(user.getEmail());
+            }
+
+            if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+                if (checkPasswordFormat(user.getPassword())) {
+                    String encryptPassword = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
+                    oldUser.setPassword(encryptPassword);
+                }
+            }
+
+            userRepository.save(user);
+        }
     }
 
     // READ
@@ -57,4 +72,12 @@ public class UserService {
     public boolean checkPasswordFormat(String password){return password.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W)(.{8,})");}
 
     public boolean checkEmailFormat(String password){return password.matches("[a-zA-Z]\\w+(\\.\\w+)*@[a-zA-Z]+\\.[a-zA-Z]{1,3}");}
+
+    public void createRootUser(){
+        User root = new User();
+        root.setEmail("root@root.com");
+        root.setPassword("root");
+        root.setAdmin(true);
+        saveUser(root);
+    }
 }

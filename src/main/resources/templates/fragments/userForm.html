@@ -4,6 +4,7 @@
 
 <div th:fragment="formCard(title, actionUrl, buttonText, buttonClass)" class="card form-card">
     <h2 th:text="${title}"></h2>
+    <div th:replace="~{fragments/popup.html :: warningPopup}"></div>
     <form th:action="${actionUrl}" method="POST">
 
         <div class="input-group">
@@ -31,7 +32,7 @@
 
         <div class="button-group">
             <a th:href="@{/admin/}" class="button btn-classic">[ Retour ]</a>
-            <button type="submit" th:class="${buttonClass}" th:text="'[ ' + ${buttonText} + ' ]'"></button>
+            <button type="submit" th:class="${buttonClass} +' ' + button" th:text="'[ ' + ${buttonText} + ' ]'"></button>
         </div>
 
     </form>

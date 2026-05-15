@@ -9,9 +9,7 @@
 <body>
 
 <header th:replace="~{fragments/adminHeader.html :: adminHeader}"></header>
-
 <main>
-
     <div th:replace="~{fragments/userForm.html :: formCard(
         title='Ajouter utilisateur',
         actionUrl=@{/admin/adduser},

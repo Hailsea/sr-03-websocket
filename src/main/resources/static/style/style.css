@@ -60,7 +60,17 @@ input:focus {
     gap: 10px;
 }
 
-button, .button {
+button, input[type="submit"], input[type="reset"] {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+
+.button {
     display: inline-block;
     width: 100%;
     padding: 10px;

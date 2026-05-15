@@ -18,6 +18,16 @@ public class AdminController {
     @Resource
     private UserService userService;
 
+    @PostMapping(value="/login")
+    public String loginRequest(Model model, @RequestParam String email, String password){
+        User user=userService.getUserByEmailAddress(email);
+        if (user!=null && BCrypt.verifyer().verify(password.toCharArray(), user.getPassword()).verified){
+            return "redirect:/admin/home";
+        }
+        model.addAttribute("popupMessage","Mail ou mot de passe invalide.");
+        return "login";
+    }
+
     @GetMapping("/")
     public String homeAdmin(Model model) {
         List<User> users = userService.getAllUsers();
@@ -42,8 +52,10 @@ public class AdminController {
     }
 
     @GetMapping("/user/{idUser}")
-    public User userAccount(@PathVariable int idUser) {
-        return userService.getUserById(idUser);
+    public String userAccount(@PathVariable int idUser, Model model) {
+        User user = userService.getUserById(idUser);
+        model.addAttribute("user", user);
+        return "admin/profilUser";
     }
 
     @GetMapping("/adduser")
@@ -68,9 +80,16 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/edituser")
+    @GetMapping("/edituser/{id}")
+    public String editUser(@PathVariable int id, Model model) {
+        User user = userService.getUserById(id);
+        model.addAttribute("user", user);
+        return "admin/formEditUser";
+    }
+
+    @PostMapping("/edituser/{id}")
     public String editUser(@ModelAttribute User user) {
-        userService.saveUser(user);
+        userService.updateUser(user);
         return "redirect:/admin/";
     }
 
