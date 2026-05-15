@@ -1,7 +1,7 @@
 package fr.utc.sr03.controller;
 
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
+import fr.utc.sr03.model.Channel;
 import fr.utc.sr03.model.User;
 import fr.utc.sr03.services.JakartaEmail;
 import fr.utc.sr03.services.UserService;
@@ -17,6 +17,30 @@ public class ApiController {
     @Resource
     private UserService userService;
 
+    /*@GetMapping(value = "/liste")
+    public List<User> getUsers(){
+        return userService.getAllUsers();
+    }*/
+
+    /*@GetMapping(value = "/oneUser/{id}")
+    public User getUserById(@PathVariable int id){
+        return userService.getUserById(id);
+    }*/
+
+    @GetMapping("/user")
+    public User getUser(@RequestParam(value = "id") int idUser) {
+        User u = userService.getUserById(idUser);
+        u.setPassword("*");
+        return u;
+    }
+
+    @GetMapping("/user/propchannel")
+    public List<Channel> getChannel(@RequestParam(value = "idUser") int idUser) {
+        return userService.getUserOwnerChannel(idUser);
+    }
+
+    @GetMapping("/user/channel")
+
     @PostMapping(value = "/create")
     public void create(){
         User user = new User();
@@ -26,15 +50,8 @@ public class ApiController {
         userService.saveUser(user);
     }
 
-    @GetMapping(value = "/liste")
-    public List<User> getUsers(){
-        return userService.getAllUsers();
-    }
+    @PostMapping(value="/update")
 
-    @GetMapping(value = "/oneUser/{id}")
-    public User getUserById(@PathVariable int id){
-        return userService.getUserById(id);
-    }
 
     @GetMapping(value = "/testmail")
     public void testmail(){

@@ -2,6 +2,7 @@ package fr.utc.sr03.services;
 
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import fr.utc.sr03.model.Channel;
 import fr.utc.sr03.model.User;
 import fr.utc.sr03.repository.UserRepository;
 import jakarta.annotation.Resource;
@@ -73,11 +74,7 @@ public class UserService {
 
     public boolean checkEmailFormat(String password){return password.matches("[a-zA-Z]\\w+(\\.\\w+)*@[a-zA-Z]+\\.[a-zA-Z]{1,3}");}
 
-    public void createRootUser(){
-        User root = new User();
-        root.setEmail("root@root.com");
-        root.setPassword("root");
-        root.setAdmin(true);
-        saveUser(root);
+    public List<Channel> getUserOwnerChannel (int idUser) {
+        return userRepository.getOwnerChannel(idUser);
     }
 }

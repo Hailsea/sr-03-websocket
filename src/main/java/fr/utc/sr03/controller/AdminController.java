@@ -4,6 +4,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import fr.utc.sr03.model.User;
 import fr.utc.sr03.services.UserService;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +20,15 @@ public class AdminController {
     private UserService userService;
 
     @PostMapping(value="/login")
-    public String loginRequest(Model model, @RequestParam String email, String password){
+    public String loginRequest(Model model, HttpSession session, @RequestParam String email, String password){
         User user=userService.getUserByEmailAddress(email);
         if (user!=null && BCrypt.verifyer().verify(password.toCharArray(), user.getPassword()).verified){
-            return "redirect:/admin/home";
+            //session.setAttribute("user", user); //TODO session id role
+            //System.out.println(session.getAttribute("user"));
+            if (user.getAdmin()) {
+                return "redirect:/admin/home";
+            }
+            return "redirect:/user/home";
         }
         model.addAttribute("popupMessage","Mail ou mot de passe invalide.");
         return "login";

@@ -1,6 +1,8 @@
 package fr.utc.sr03.model;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,6 +31,9 @@ public class User {
 
     @Column(name="is_alive", nullable = false)
     private Boolean isAlive = false;
+
+    @OneToMany(mappedBy = "channel")
+    private List<Channel> ownerChannel = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
