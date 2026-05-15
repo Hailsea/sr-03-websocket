@@ -52,7 +52,7 @@ public class AdminController {
     }
 
     @GetMapping("/user/{idUser}")
-    public String userAccount(@PathVariable int idUser, Model model) {
+    public String userAccount(Model model, @PathVariable int idUser) {
         User user = userService.getUserById(idUser);
         model.addAttribute("user", user);
         return "admin/profilUser";
@@ -64,9 +64,18 @@ public class AdminController {
         return "admin/formAddUser";
     }
 
-    @PostMapping("/adduser")
-    public String createUser(Model model, @ModelAttribute User user) {
-        switch (userService.saveUser(user)){
+    @PostMapping("/saveuser")
+    public String createUser(Model model, @ModelAttribute User user, String editPassword) {
+        int retour=0;
+        if (editPassword.equals("true")){
+            retour=userService.saveUser(user);
+        }
+        else{
+            retour=userService.updateUser(user);
+        }
+        System.out.println(retour);
+        System.out.println(editPassword);
+        switch (retour) {
             case -1:
                 model.addAttribute("popupMessage", "Mail invalide");
                 model.addAttribute("User", user);
@@ -80,17 +89,11 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/edituser/{id}")
-    public String editUser(@PathVariable int id, Model model) {
-        User user = userService.getUserById(id);
+    @PostMapping("/edituser")
+    public String editUser(@RequestParam int idUser, Model model) {
+        User user = userService.getUserById(idUser);
         model.addAttribute("user", user);
         return "admin/formEditUser";
-    }
-
-    @PostMapping("/edituser/{id}")
-    public String editUser(@ModelAttribute User user) {
-        userService.updateUser(user);
-        return "redirect:/admin/";
     }
 
     @PostMapping("/deleteuser")
