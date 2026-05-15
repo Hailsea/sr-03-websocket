@@ -9,6 +9,8 @@
 <body>
 <header th:replace="~{fragments/adminHeader.html :: adminHeader}"></header>
 
+<div th:replace="~{fragments/popup.html :: warningPopup}"></div>
+
 <main class="">
 
     <div class="card table-card">
@@ -42,9 +44,14 @@
                     <a th:href="@{/admin/user/{id}(id=${user.getId()})}" class="button btn-classic">
                         [ VOIR ]
                     </a>
-                    <a th:href="@{/admin/edituser/{id}(id=${user.getId()})}" class="button btn-update">
-                        [ MODIFIER ]
-                    </a>
+                    <form th:action="@{/admin/edituser}" th:method="POST" class="button btn-classic">
+                        <input type="hidden" name="idUser" th:value="${user.id}"/>
+                        <button type="submit">[ Modifier ]</button>
+                    </form>
+                    <form th:action="@{/admin/deleteuser}" th:method="POST" class="button btn-classic">
+                        <input type="hidden" name="idUser" th:value="${user.id}"/>
+                        <button type="submit">[ Supprimer ]</button>
+                    </form>
                 </td>
             </tr>
             <tr th:if="${#lists.isEmpty(allUsers)}">

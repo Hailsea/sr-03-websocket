@@ -30,17 +30,24 @@ public class UserService {
         String bcryptHashString = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
         user.setPassword(bcryptHashString);
         userRepository.save(user);
-        return user.getId();
+        return 1;
     }
 
     // UPDATE
-    public void updateUser(User user) {
+    public int updateUser(User user) {
         User oldUser = getUserById(user.getId());
+        System.out.println("User:"+user);
+        System.out.println("Userid:"+user.getId());
+        System.out.println(oldUser);
         if (oldUser != null) {
             oldUser.setLastname(user.getLastname());
             oldUser.setFirstname(user.getFirstname());
 
-            if (user.getEmail() != null && checkEmailFormat(user.getEmail())) {
+            if (user.getEmail() != null) {
+                System.out.println(user.getEmail());
+                if (!checkEmailFormat(user.getEmail())){
+                    return -1;
+                }
                 oldUser.setEmail(user.getEmail());
             }
 
@@ -49,10 +56,14 @@ public class UserService {
                     String encryptPassword = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
                     oldUser.setPassword(encryptPassword);
                 }
+                else{
+                    return -2;
+                }
             }
 
             userRepository.save(user);
         }
+        return 1;
     }
 
     // READ

@@ -13,7 +13,9 @@
 <main>
     <div th:replace="~{fragments/userForm.html :: formCard(
         title='Modifier l\'utilisateur \#' + ${user.id},
-        actionUrl=@{/admin/edituser/{id}(id=${user.id})},
+        actionUrl=@{/admin/saveuser},
+        id=${user.id},
+        edit='true',
         buttonText='Mettre à jour',
         buttonClass='btn-update')}">
     </div>
