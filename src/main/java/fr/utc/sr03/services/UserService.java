@@ -7,8 +7,6 @@ import fr.utc.sr03.model.User;
 import fr.utc.sr03.repository.UserRepository;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import java.util.List;
 
@@ -85,7 +83,11 @@ public class UserService {
 
     public boolean checkEmailFormat(String password){return password.matches("[a-zA-Z]\\w+(\\.\\w+)*@[a-zA-Z]+\\.[a-zA-Z]{1,3}");}
 
-    public List<Channel> getUserOwnerChannel (int idUser) {
-        return userRepository.getOwnerChannel(idUser);
+    public List<Channel> getChannelOwner (int idUser) {
+        return userRepository.getChannelOwner(idUser);
+    }
+
+    public List<Channel> getChannelUser(int idUser) {
+        return userRepository.getChannelUser(idUser);
     }
 }

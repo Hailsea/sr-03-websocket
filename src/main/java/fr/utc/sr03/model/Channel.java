@@ -13,7 +13,6 @@ public class Channel {
     private int id;
 
     @ManyToOne
-    @MapsId("idUser")
     @JoinColumn(name = "id_user")
     private User owner;
 
@@ -32,12 +31,12 @@ public class Channel {
     @Column(name="creation_date_channel", nullable = false)
     private LocalDateTime creationDate;
 
-    public User getUser() {
+    public User getOwner() {
         return owner;
     }
 
-    public void setUser(User user) {
-        this.owner = user;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public int getId() {

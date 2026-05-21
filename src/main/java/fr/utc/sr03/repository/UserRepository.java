@@ -15,6 +15,8 @@ public interface UserRepository extends JpaRepository<User, Integer>{
     User findByEmailAddress(String emailAddress);
 
     @Query("select u.ownerChannel from User u where u.id = ?1")
-    List<Channel> getOwnerChannel(int id);
+    List<Channel> getChannelOwner(int id);
 
+    @Query("select u.channels from User u where u.id = ?1")
+    List<Channel> getChannelUser(int idUser);
 }
