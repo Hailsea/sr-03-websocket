@@ -19,7 +19,7 @@ public class UserService {
     private UserRepository userRepository;
 
     // CREATE or UPDATE
-    public int saveUser(User user) {
+    public int saveUser(User user, String passwordConfirmation) {
         String email=user.getEmail();
         if (!checkEmailFormat(email)){
             return -1;
@@ -27,11 +27,12 @@ public class UserService {
         if (!checkPasswordFormat(user.getPassword())){
             return -2;
         }
-
         if (userRepository.findByEmailAddress(email)!=null){
             return -3;
         }
-
+        if (!user.getPassword().equals(passwordConfirmation)){
+            return -4;
+        }
         String bcryptHashString = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
         user.setPassword(bcryptHashString);
         userRepository.save(user);
@@ -43,6 +44,7 @@ public class UserService {
         User oldUser = getUserById(user.getId());
         System.out.println("User:"+user);
         System.out.println("Userid:"+user.getId());
+        System.out.println("Userpw:"+user.getPassword());
         System.out.println(oldUser);
         if (oldUser != null) {
             oldUser.setLastname(user.getLastname());
@@ -66,7 +68,7 @@ public class UserService {
                 }
             }
 
-            userRepository.save(user);
+            userRepository.save(oldUser);
         }
         return 1;
     }
@@ -111,8 +113,8 @@ public class UserService {
 
     public boolean checkEmailFormat(String password){return password.matches("[a-zA-Z]\\w+(\\.\\w+)*@[a-zA-Z]+\\.[a-zA-Z]{1,3}");}
 
-    public List<Channel> getUserOwnerChannel (int idUser) {
-//        return userRepository.getOwnerChannel(idUser);
-        return null;
+    public List<Channel> getChannelOwner (int idUser) {
+        return userRepository.getChannelOwner(idUser);
+//        return null;
     }
 }

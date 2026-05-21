@@ -17,7 +17,6 @@ public class WebController {
 
     @Resource
     private UserService userService;
-    private JakartaEmail jakartaEmail=new JakartaEmail();
 
     @GetMapping(value="/")
     public String root() {

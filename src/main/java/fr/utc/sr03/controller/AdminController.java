@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.Console;
 import java.util.List;
 
 @Controller
@@ -72,14 +71,16 @@ public class AdminController {
     }
 
     @PostMapping("/saveuser")
-    public String createUser(Model model, @ModelAttribute User user,@RequestParam String edit) {
+    public String createUser(Model model, @ModelAttribute User user,@RequestParam String edit, @RequestParam(required = false) String password_confirmation) {
         int retour=0;
         if (edit.equals("false")){
-            retour=userService.saveUser(user);
+            retour=userService.saveUser(user,password_confirmation);
         }
-        else{
-            retour=userService.updateUser(user);
+        else {
+            retour = userService.updateUser(user);
         }
+        System.out.println("retour");
+        System.out.println(retour);
         switch (retour) {
             case -1:
                 model.addAttribute("popupMessage", "Mail invalide");
@@ -91,6 +92,10 @@ public class AdminController {
                 return edit.equals("false")? "/admin/formAddUser" : "/admin/formEditUser";
             case -3:
                 model.addAttribute("popupMessage", "Compte existant.");
+                model.addAttribute("User", user);
+                return edit.equals("false")? "/admin/formAddUser" : "/admin/formEditUser";
+            case -4:
+                model.addAttribute("popupMessage", "Les mots de passe ne correspondent pas.");
                 model.addAttribute("User", user);
                 return edit.equals("false")? "/admin/formAddUser" : "/admin/formEditUser";
             default:
