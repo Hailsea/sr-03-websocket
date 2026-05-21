@@ -90,6 +90,10 @@ public class AdminController {
                 model.addAttribute("popupMessage", "Mot de passe invalide : doit contenir au minimum une majuscule, une minuscule, un chiffre, un caractère spécial et 8 caractères minimum");
                 model.addAttribute("User", user);
                 return "/admin/formAddUser";
+            case -3:
+                model.addAttribute("popupMessage", "Compte existant.");
+                model.addAttribute("User", user);
+                return "/admin/formAddUser";
             default:
                 return "redirect:/admin/";
         }

@@ -18,11 +18,15 @@ public class UserService {
 
     // CREATE or UPDATE
     public int saveUser(User user) {
-        if (!checkEmailFormat(user.getEmail())){
+        String email=user.getEmail();
+        if (!checkEmailFormat(email)){
             return -1;
         }
         if (!checkPasswordFormat(user.getPassword())){
             return -2;
+        }
+        if (getUserByEmailAddress(email)!=null){
+            return -3;
         }
 
         String bcryptHashString = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
@@ -77,6 +81,17 @@ public class UserService {
     // DELETE
     public void deleteUser(int id) {
         userRepository.deleteById(id);
+    }
+
+    public String generateRandomPassword(){
+        int length=12;
+        String chars = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+<>ABCDEFGHIJKLMNOP1234567890";
+        String pw = "";
+        for (var x = 0; x < length; x++) {
+            int i = (int)Math.round(Math.floor(Math.random() * chars.length()));
+            pw += chars.charAt(i);
+        }
+        return pw;
     }
 
     public boolean checkPasswordFormat(String password){return password.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W)(.{8,})");}
