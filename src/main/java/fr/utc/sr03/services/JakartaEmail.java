@@ -12,7 +12,7 @@ public class JakartaEmail {
     public JakartaEmail() {
     }
 
-    public void sendMail(){
+    public void sendMailTest(){
         String to = "cedric.martinet@utc.fr";
         String from = "nepasrepondre@utc.fr";
         String host = "smtp1.utc.fr";
@@ -29,6 +29,25 @@ public class JakartaEmail {
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
             message.setSubject("Sujet");
             message.setContent("Contenu du mail", "text/html");
+            Transport.send(message);
+        } catch (MessagingException e) {
+            System.out.println(e.toString());
+        }
+    }
+
+    public void sendMail(String to,String from,String host,String subject, String content){
+        Properties props = new Properties();
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.port", "25");
+        props.put("mail.debug", "true");
+
+        Session session = Session.getInstance(props, null);
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(from));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+            message.setSubject(subject);
+            message.setContent(content, "text/html");
             Transport.send(message);
         } catch (MessagingException e) {
             System.out.println(e.toString());
