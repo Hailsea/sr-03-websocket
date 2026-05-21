@@ -7,6 +7,8 @@ import fr.utc.sr03.model.User;
 import fr.utc.sr03.repository.UserRepository;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import java.util.List;
 
@@ -25,7 +27,8 @@ public class UserService {
         if (!checkPasswordFormat(user.getPassword())){
             return -2;
         }
-        if (getUserByEmailAddress(email)!=null){
+
+        if (userRepository.findByEmailAddress(email)!=null){
             return -3;
         }
 
@@ -94,15 +97,22 @@ public class UserService {
         return pw;
     }
 
+    public void resetPassword(String email){
+        User user_to_reset=getUserByEmailAddress(email);
+        if (user_to_reset!=null){
+            user_to_reset.setPassword(generateRandomPassword());
+            updateUser(user_to_reset);
+            System.out.println("pw changé");
+//            jakartaEmail.sendMail("chenlaur@etu.utc.fr","chenlaur@etu.utc.fr","smtp1.utc.fr","DO NOT REPLY : TEST","COUCOU");
+        }
+    }
+
     public boolean checkPasswordFormat(String password){return password.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W)(.{8,})");}
 
     public boolean checkEmailFormat(String password){return password.matches("[a-zA-Z]\\w+(\\.\\w+)*@[a-zA-Z]+\\.[a-zA-Z]{1,3}");}
 
-    public List<Channel> getChannelOwner (int idUser) {
-        return userRepository.getChannelOwner(idUser);
-    }
-
-    public List<Channel> getChannelUser(int idUser) {
-        return userRepository.getChannelUser(idUser);
+    public List<Channel> getUserOwnerChannel (int idUser) {
+//        return userRepository.getOwnerChannel(idUser);
+        return null;
     }
 }

@@ -36,13 +36,7 @@ public class WebController {
 
     @PostMapping(value="/resetPassword")
     public String resetPassword(@RequestParam String email) {
-        User user_to_reset=userService.getUserByEmailAddress(email);
-        if (user_to_reset!=null){
-            user_to_reset.setPassword(userService.generateRandomPassword());
-            userService.updateUser(user_to_reset);
-            System.out.println("pw changé");
-            jakartaEmail.sendMail("chenlaur@etu.utc.fr","chenlaur@etu.utc.fr","smtp1.utc.fr","DO NOT REPLY : TEST","COUCOU");
-        }
+        userService.resetPassword(email);
         return "login";
     }
 }
