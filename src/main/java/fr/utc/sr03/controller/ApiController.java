@@ -43,8 +43,8 @@ public class ApiController {
     }
 
     @GetMapping("/user/channel")
-    public List<Channel> getChannelUser(@RequestParam(value = "idUser") int idUser) {
-        return userService.getChannelUser(idUser);
+    public List<Channel> getUserOwnerChannel(@RequestParam(value = "idUser") int idUser) {
+        return userService.getChannelOwner(idUser);
     }
 
     @PostMapping("/channel")
