@@ -24,7 +24,8 @@ public class WebController {
     }
 
     @GetMapping(value="/login")
-    public String login() {
+    public String login(Model model) {
+        model.addAttribute("popupMessage","");
         return "login";
     }
 
