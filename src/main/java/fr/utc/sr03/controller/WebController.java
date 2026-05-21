@@ -31,7 +31,7 @@ public class WebController {
 
     @GetMapping(value="/resetPassword")
     public String resetPasswordForm() {
-        return "login";
+        return "passwordReset";
     }
 
     @PostMapping(value="/resetPassword")

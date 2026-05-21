@@ -30,6 +30,7 @@ public class JakartaEmail {
             message.setSubject("Sujet");
             message.setContent("Contenu du mail", "text/html");
             Transport.send(message);
+            System.out.println("Mail envoyé");
         } catch (MessagingException e) {
             System.out.println(e.toString());
         }
