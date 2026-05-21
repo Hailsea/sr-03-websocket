@@ -51,10 +51,10 @@ public class AdminController {
     }
 
     @GetMapping("/test")
-    public String test(){
-        System.out.println(userService.getUserByEmailAddress("not existing"));
-        System.out.println(userService.getUserByEmailAddress("james.jame@gmail.com"));
-        return "redirect:/admin/";
+    public String test(Model model){
+        model.addAttribute("User",new User());
+        model.addAttribute("popupMessage", "things");
+        return "admin/formAddUser";
     }
 
     @GetMapping("/user/{idUser}")
@@ -67,33 +67,32 @@ public class AdminController {
     @GetMapping("/adduser")
     public String formAddUser(Model model){
         model.addAttribute("User",new User());
+        model.addAttribute("popupMessage", "");
         return "admin/formAddUser";
     }
 
     @PostMapping("/saveuser")
-    public String createUser(Model model, @ModelAttribute User user, String editPassword) {
+    public String createUser(Model model, @ModelAttribute User user,@RequestParam String edit) {
         int retour=0;
-        if (editPassword.equals("true")){
+        if (edit.equals("false")){
             retour=userService.saveUser(user);
         }
         else{
             retour=userService.updateUser(user);
         }
-        System.out.println(retour);
-        System.out.println(editPassword);
         switch (retour) {
             case -1:
                 model.addAttribute("popupMessage", "Mail invalide");
                 model.addAttribute("User", user);
-                return "/admin/formAddUser";
+                return edit.equals("false")? "/admin/formAddUser" : "/admin/formEditUser";
             case -2:
                 model.addAttribute("popupMessage", "Mot de passe invalide : doit contenir au minimum une majuscule, une minuscule, un chiffre, un caractère spécial et 8 caractères minimum");
                 model.addAttribute("User", user);
-                return "/admin/formAddUser";
+                return edit.equals("false")? "/admin/formAddUser" : "/admin/formEditUser";
             case -3:
                 model.addAttribute("popupMessage", "Compte existant.");
                 model.addAttribute("User", user);
-                return "/admin/formAddUser";
+                return edit.equals("false")? "/admin/formAddUser" : "/admin/formEditUser";
             default:
                 return "redirect:/admin/";
         }
@@ -103,6 +102,7 @@ public class AdminController {
     public String editUser(@RequestParam int idUser, Model model) {
         User user = userService.getUserById(idUser);
         model.addAttribute("user", user);
+        model.addAttribute("popupMessage", "");
         return "admin/formEditUser";
     }
 
