@@ -5,7 +5,7 @@
     <title>Warning popup</title>
 </head>
 <body>
-    <div class="popup" th:fragment="warningPopup">
+    <div class="popup" th:fragment="warningPopup(popupMessage)">
         <a>
             <p th:text="${popupMessage}"></p>
         </a>

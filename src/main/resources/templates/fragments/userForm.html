@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 
-<div th:fragment="formCard(title, actionUrl, id, edit, buttonText, buttonClass)" class="card form-card">
+<div th:fragment="formCard(title, actionUrl, id, edit, buttonText, buttonClass, popupMessage)" class="card form-card">
     <h2 th:text="${title}"></h2>
-    <div th:replace="~{fragments/popup.html :: warningPopup}"></div>
+    <div th:replace="~{fragments/popup.html :: warningPopup(${popupMessage})}"></div>
     <form th:action="${actionUrl}" method="POST">
 
         <div class="input-group">
@@ -38,7 +38,7 @@
 
         </div>
 
-        <input  type="hidden" name="editPassword" th:value="${editPassword}">
+        <input type="hidden" name="edit" th:value="${edit}">
 
         <div class="button-group">
             <a th:href="@{/admin/}" class="button btn-classic">[ Retour ]</a>

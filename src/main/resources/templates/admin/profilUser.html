@@ -53,7 +53,7 @@
         </div>
 
         <div class="button-group" style="margin-top: 25px;">
-            <a th:href="@{/admin/users}" class="button btn-classic">[ Retour ]</a>
+            <a th:href="@{/admin/}" class="button btn-classic">[ Retour ]</a>
             <form th:action="@{/admin/deleteuser}" th:method="POST" class="button btn-classic">
                 <input type="hidden" name="idUser" th:value="${user.id}"/>
                 <button type="submit">[ Supprimer ]</button>

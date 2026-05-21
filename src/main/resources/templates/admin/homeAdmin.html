@@ -18,7 +18,7 @@
 <body>
 <header th:replace="~{fragments/adminHeader.html :: adminHeader}"></header>
 
-<div th:replace="~{fragments/popup.html :: warningPopup}"></div>
+<div th:replace="~{fragments/popup.html :: warningPopup(${popupMessage})}"></div>
 
 <main class="">
 
