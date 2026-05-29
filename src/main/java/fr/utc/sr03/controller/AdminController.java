@@ -25,9 +25,9 @@ public class AdminController {
             //session.setAttribute("user", user); //TODO session id role
             //System.out.println(session.getAttribute("user"));
             if (user.getAdmin()) {
-                return "redirect:/admin/home";
+                return "redirect:/admin";
             }
-            return "redirect:/user/home";
+            return "/test";
         }
         model.addAttribute("popupMessage","Mail ou mot de passe invalide.");
         return "login";
@@ -37,14 +37,6 @@ public class AdminController {
     public String homeAdmin(Model model) {
         List<User> users = userService.getAllUsers();
         model.addAttribute("popupMessage", "");
-        model.addAttribute("allUsers", users);
-        return "admin/homeAdmin";
-    }
-
-    @GetMapping("/{warning}")
-    public String homeAdmin(Model model, @PathVariable String warning) {
-        List<User> users = userService.getAllUsers();
-        model.addAttribute("popupMessage", warning);
         model.addAttribute("allUsers", users);
         return "admin/homeAdmin";
     }

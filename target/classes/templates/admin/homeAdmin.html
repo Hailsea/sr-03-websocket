@@ -5,11 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Admin</title>
     <link th:href="@{/style/style.css}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#users').DataTable();
+        } );
+    </script>
+
 </head>
 <body>
 <header th:replace="~{fragments/adminHeader.html :: adminHeader}"></header>
 
-<div th:replace="~{fragments/popup.html :: warningPopup}"></div>
+<div th:replace="~{fragments/popup.html :: warningPopup(${popupMessage})}"></div>
 
 <main class="">
 
@@ -24,13 +33,15 @@
     </div>
 
     <div class="">
-        <table class="">
+        <table id="users" class="table-striped">
             <thead>
             <tr>
                 <th>ID</th>
                 <th>PRENOM</th>
                 <th>NOM</th>
                 <th>EMAIL</th>
+                <th>ROLE</th>
+                <th>ACTIVE</th>
                 <th>ACTIONS</th>
             </tr>
             </thead>
@@ -40,6 +51,8 @@
                 <td th:text="${user.getFirstname()}"></td>
                 <td th:text="${user.getLastname()}"></td>
                 <td th:text="${user.getEmail()}"></td>
+                <td th:text="${user.getAdmin()}==true?'Admin':'Utilisateur'"></td>
+                <td th:text="${user.getAlive()}?'Actif':'Désactivé'"></td>
                 <td class="button-group">
                     <a th:href="@{/admin/user/{id}(id=${user.getId()})}" class="button btn-classic">
                         [ VOIR ]
@@ -51,6 +64,10 @@
                     <form th:action="@{/admin/deleteuser}" th:method="POST" class="button btn-classic">
                         <input type="hidden" name="idUser" th:value="${user.id}"/>
                         <button type="submit">[ Supprimer ]</button>
+                    </form>
+                    <form th:action="@{/resetPassword}" th:method="POST" class="button btn-classic">
+                        <input type="hidden" name="email" th:value="${user.email}"/>
+                        <button type="submit">[ Réinitialiser mot de passe ]</button>
                     </form>
                 </td>
             </tr>

@@ -1,16 +1,23 @@
 package fr.utc.sr03.controller;
 
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+import fr.utc.sr03.dto.Login;
 import fr.utc.sr03.model.Channel;
 import fr.utc.sr03.model.User;
 import fr.utc.sr03.services.UserService;
 import fr.utc.sr03.services.ChannelService;
 import jakarta.annotation.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping(path = "/api")
 public class ApiController {
 
@@ -29,6 +36,26 @@ public class ApiController {
     public User getUserById(@PathVariable int id){
         return userService.getUserById(id);
     }*/
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Login loginUser) {
+        User user = userService.getUserByEmailAddress(loginUser.getEmail());
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "email introuvable"));
+        }
+        if (BCrypt.verifyer().verify(loginUser.getPassword().toCharArray(), user.getPassword()).verified) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("id", user.getId());
+            response.put("firstname", user.getFirstname());
+            response.put("lastname", user.getLastname());
+            response.put("email", user.getEmail());
+            response.put("isAdmin", user.getAdmin());
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "mot de passe incorrect"));
+        }
+    }
 
     @GetMapping("/user")
     public User getUser(@RequestParam(value = "idUser") int idUser) {

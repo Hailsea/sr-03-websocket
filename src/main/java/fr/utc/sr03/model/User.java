@@ -23,7 +23,7 @@
         @Column(name="email_user", length = 50, nullable = false, unique = true)
         private String email;
 
-        @Column(name="password_user", length = 50, nullable = false)
+        @Column(name="password_user", nullable = false)
         private String password;
 
         @Column(name="is_admin", nullable = false)

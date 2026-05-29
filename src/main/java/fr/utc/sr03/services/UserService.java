@@ -96,6 +96,7 @@ public class UserService {
             int i = (int)Math.round(Math.floor(Math.random() * chars.length()));
             pw += chars.charAt(i);
         }
+        System.out.println(pw);
         return pw;
     }
 
@@ -103,8 +104,8 @@ public class UserService {
         User user_to_reset=getUserByEmailAddress(email);
         if (user_to_reset!=null){
             user_to_reset.setPassword(generateRandomPassword());
-            updateUser(user_to_reset);
             System.out.println("pw changé");
+            updateUser(user_to_reset);
 //            jakartaEmail.sendMail("chenlaur@etu.utc.fr","chenlaur@etu.utc.fr","smtp1.utc.fr","DO NOT REPLY : TEST","COUCOU");
         }
     }
