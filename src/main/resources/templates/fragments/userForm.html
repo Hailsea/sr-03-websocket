@@ -26,15 +26,15 @@
         </div>
 
         <div class="input-group">
-            <span th:if="${edit=='true'}">
-                <input  type="hidden" name="id" th:value="${id}">
-            </span>
-            <span th:unless="${edit=='true'}">
-                <label for="password">Mot de passe</label>
-                <input type="password" id="password" name="password" placeholder="Mot de passe" required>
-                <label for="password_confirmation">Confirmer le mot de passe</label>
-                <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirmer le mot de passe" required>
-            </span>
+        <span th:if="${edit=='true'}">
+            <input  type="hidden" name="id" th:value="${id}">
+        </span>
+        <span th:unless="${edit=='true'}">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" placeholder="Mot de passe" required>
+            <label for="password_confirmation">Confirmer le mot de passe</label>
+            <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirmer le mot de passe" required>
+        </span>
 
         </div>
 
@@ -42,7 +42,7 @@
 
         <div class="button-group">
             <a th:href="@{/admin/}" class="button btn-classic">[ Retour ]</a>
-            <button type="submit" th:class="${buttonClass} +' ' + button" th:text="'[ ' + ${buttonText} + ' ]'"></button>
+            <button type="submit" id="submit" th:class="${buttonClass} +' ' + button" th:text="'[ ' + ${buttonText} + ' ]'"></button>
         </div>
 
     </form>
@@ -50,3 +50,23 @@
 
 </body>
 </html>
+
+<script>
+    const email=document.getElementById("email")
+    const password=document.getElementById("password")
+    const password_confirmation=document.getElementById("password_confirmation")
+    const submit=document.getElementById("submit")
+    submit.addEventListener("click",()=>{
+        if (email.value.search("[a-zA-Z]\\w+(\\.\\w+)*@[a-zA-Z]+\\.[a-zA-Z]{1,3}")===-1){
+                return false;
+        }
+        if (password.value.search("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W)(.{8,})")){
+            return false;
+        }
+        if (!password.value===password_confirmation.value){
+            return false;
+        }
+        return true
+    })
+
+</script>
