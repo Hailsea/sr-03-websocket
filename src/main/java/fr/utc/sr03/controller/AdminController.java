@@ -18,22 +18,7 @@ public class AdminController {
     @Resource
     private UserService userService;
 
-    @PostMapping(value="/login")
-    public String loginRequest(Model model, HttpSession session, @RequestParam String email, String password){
-        User user=userService.getUserByEmailAddress(email);
-        if (user!=null && BCrypt.verifyer().verify(password.toCharArray(), user.getPassword()).verified){
-            //session.setAttribute("user", user); //TODO session id role
-            //System.out.println(session.getAttribute("user"));
-            if (user.getAdmin()) {
-                return "redirect:/admin";
-            }
-            return "/test";
-        }
-        model.addAttribute("popupMessage","Mail ou mot de passe invalide.");
-        return "login";
-    }
-
-    @GetMapping("/")
+    @GetMapping
     public String homeAdmin(Model model) {
         List<User> users = userService.getAllUsers();
         model.addAttribute("popupMessage", "");

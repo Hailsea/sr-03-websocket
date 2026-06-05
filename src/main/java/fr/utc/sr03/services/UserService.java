@@ -7,8 +7,6 @@ import fr.utc.sr03.model.User;
 import fr.utc.sr03.repository.UserRepository;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import java.util.List;
 
@@ -27,7 +25,7 @@ public class UserService {
         if (!checkPasswordFormat(user.getPassword())){
             return -2;
         }
-        if (userRepository.findByEmailAddress(email)!=null){
+        if (userRepository.findByEmail(email)!=null){
             return -3;
         }
         if (!user.getPassword().equals(passwordConfirmation)){
@@ -77,8 +75,7 @@ public class UserService {
     public User getUserById(int id) {
         return userRepository.findById(id).orElse(null);
     }
-    public User getUserByEmailAddress(String emailAddress) {return userRepository.findByEmailAddress(emailAddress);}
-
+    public User getUserByEmail(String emailAddress) {return userRepository.findByEmail(emailAddress);}
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -88,34 +85,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public String generateRandomPassword(){
-        int length=12;
-        String chars = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+<>ABCDEFGHIJKLMNOP1234567890";
-        String pw = "";
-        for (var x = 0; x < length; x++) {
-            int i = (int)Math.round(Math.floor(Math.random() * chars.length()));
-            pw += chars.charAt(i);
-        }
-        System.out.println(pw);
-        return pw;
-    }
-
-    public void resetPassword(String email){
-        User user_to_reset=getUserByEmailAddress(email);
-        if (user_to_reset!=null){
-            user_to_reset.setPassword(generateRandomPassword());
-            System.out.println("pw changé");
-            updateUser(user_to_reset);
-//            jakartaEmail.sendMail("chenlaur@etu.utc.fr","chenlaur@etu.utc.fr","smtp1.utc.fr","DO NOT REPLY : TEST","COUCOU");
-        }
-    }
-
     public boolean checkPasswordFormat(String password){return password.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W)(.{8,})");}
 
     public boolean checkEmailFormat(String password){return password.matches("[a-zA-Z]\\w+(\\.\\w+)*@[a-zA-Z]+\\.[a-zA-Z]{1,3}");}
-
-    public List<Channel> getChannelOwner (int idUser) {
-        return userRepository.getChannelOwner(idUser);
-//        return null;
-    }
 }

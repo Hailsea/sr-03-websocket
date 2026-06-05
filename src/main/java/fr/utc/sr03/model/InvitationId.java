@@ -19,6 +19,30 @@ public class InvitationId implements Serializable {
 
     public InvitationId() {}
 
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
+
+    public int getIdUserTarget() {
+        return idUserTarget;
+    }
+
+    public void setIdUserTarget(int idUserTarget) {
+        this.idUserTarget = idUserTarget;
+    }
+
+    public int getIdChannel() {
+        return idChannel;
+    }
+
+    public void setIdChannel(int idChannel) {
+        this.idChannel = idChannel;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -30,5 +54,14 @@ public class InvitationId implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(idUser, idUserTarget, idChannel);
+    }
+
+    @Override
+    public String toString() {
+        return "InvitationId{" +
+                "idUser=" + idUser +
+                ", idUserTarget=" + idUserTarget +
+                ", idChannel=" + idChannel +
+                '}';
     }
 }

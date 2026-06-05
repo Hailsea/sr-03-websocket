@@ -32,9 +32,6 @@
         @Column(name="is_alive", nullable = false)
         private Boolean isAlive = false;
 
-        @OneToMany(mappedBy = "owner")
-        private List<Channel> ownerChannel = new ArrayList<>();
-
         @ManyToMany
         @JoinTable(
                 name = "user_in_channel",

@@ -5,9 +5,13 @@ import fr.utc.sr03.model.User;
 import fr.utc.sr03.repository.ChannelRepository;
 import fr.utc.sr03.repository.UserRepository;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ChannelService {
@@ -16,30 +20,60 @@ public class ChannelService {
     private ChannelRepository channelRepository;
 
     @Resource
-    private UserRepository userRepository;
+    private UserService userService;
 
-    public Channel createChannel(Channel channel) {
-        if (channel.getCreationDate() == null) {
-            channel.setCreationDate(LocalDateTime.now());
+    public List<Channel> getChannelsByUserPaginated(int idUser, int page, int size) {
+        User user = userService.getUserById(idUser);
+        Page<Channel> pageResult = channelRepository.findByUserTarget(user, PageRequest.of(page, size));
+        return pageResult.getContent();
+    }
+
+    public List<Channel> getChannelsByOwnerPaginated(int idOwner, int page, int size) {
+        User user = userService.getUserById(idOwner);
+        Page<Channel> pageResult = channelRepository.findByOwner(user, PageRequest.of(page, size));
+        return pageResult.getContent();
+    }
+
+    public List<Channel> getChannelsByInvitationPaginated(int idUser, int page, int size) {
+        User user = userService.getUserById(idUser);
+        Page<Channel> pageResult = channelRepository.findByInvitation(user, PageRequest.of(page, size));
+        return pageResult.getContent();
+    }
+
+    public Channel getOwnerChannelById(Integer idChannel, Integer idOwner) {
+        Channel channel = channelRepository.findById(idChannel).orElse(null);
+
+        if (channel != null && channel.getOwner() != null && channel.getOwner().getId() == idOwner) {
+            return channel;
+        }
+        return null;
+    }
+
+    public Channel createChannel(Channel channel, int ownerId) {
+        if (channelRepository.existsByTitle(channel.getTitle())) {
+            throw new IllegalArgumentException("Channel title already use");
         }
 
-        if (channel.getOwner() != null && channel.getOwner().getId() > 0) {
-            User fullUser = userRepository.findById(channel.getOwner().getId()).orElse(null);
-            channel.setOwner(fullUser);
-        }
-
+        User owner = userService.getUserById(ownerId);
+        channel.setOwner(owner);
+        channel.setCreationDate(LocalDateTime.now());
         return channelRepository.save(channel);
     }
 
-    public Channel updateChannel(Channel channel) {
-        if (channel.getCreationDate() == null) {
-            channel.setCreationDate(LocalDateTime.now());
+    public Channel updateChannel(Integer id, Channel channelToUpdate, Integer ownerId) {
+        if (!channelRepository.existsById(id)) {
+            return null;
+        }
+        channelToUpdate.setId(id);
+
+        User owner = userService.getUserById(ownerId);
+        channelToUpdate.setOwner(owner);
+
+        if (channelToUpdate.getCreationDate() == null) {
+            channelToUpdate.setCreationDate(LocalDateTime.now());
         }
 
-        if (channelRepository.existsById(channel.getId())) {
-            return channelRepository.save(channel);
-        }
-        return null;
+        return channelRepository.save(channelToUpdate);
     }
 
     public Channel deleteChannel(int id) {

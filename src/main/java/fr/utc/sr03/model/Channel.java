@@ -10,7 +10,7 @@ public class Channel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id_channel")
-    private int id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "id_user")
@@ -39,11 +39,11 @@ public class Channel {
         this.owner = owner;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
