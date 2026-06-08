@@ -1,13 +1,11 @@
 package fr.utc.sr03.controller.api;
 
-import fr.utc.sr03.dto.ChannelDTO;
 import fr.utc.sr03.dto.LoginDTO;
 import fr.utc.sr03.dto.UserDTO;
 import fr.utc.sr03.model.User;
 import fr.utc.sr03.services.AuthService;
 import jakarta.annotation.Resource;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,14 +21,8 @@ public class AuthController {
     private ModelMapper modelMapper;
 
     @PostMapping(value = "/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO login) {
+    public ResponseEntity<UserDTO> login(@RequestBody LoginDTO login) {
         User user = authService.authenticate(login.getEmail(), login.getPassword());
-
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("incorrect mail or password");
-        }
-
         UserDTO userDTO = modelMapper.map(user, UserDTO.class);
         return ResponseEntity.ok(userDTO);
     }

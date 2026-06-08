@@ -1,6 +1,7 @@
 package fr.utc.sr03.services;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import fr.utc.sr03.exception.UnauthorizedException;
 import fr.utc.sr03.model.User;
 import fr.utc.sr03.repository.UserRepository;
 import jakarta.annotation.Resource;
@@ -18,10 +19,10 @@ public class AuthService {
     public User authenticate(String email, String password) {
         User user = userRepository.findByEmail(email);
 
-        if (user!=null && BCrypt.verifyer().verify(password.toCharArray(), user.getPassword()).verified) {
-            return user;
+        if (user == null && !BCrypt.verifyer().verify(password.toCharArray(), user.getPassword()).verified) {
+            throw new UnauthorizedException("incorrect email or password");
         }
-        return null;
+        return user;
     }
 
     private String generateRandomPassword(){
@@ -32,7 +33,6 @@ public class AuthService {
             int i = (int)Math.round(Math.floor(Math.random() * chars.length()));
             pw += chars.charAt(i);
         }
-        System.out.println(pw);
         return pw;
     }
 
@@ -40,9 +40,7 @@ public class AuthService {
         User user_to_reset=userService.getUserByEmail(email);
         if (user_to_reset!=null){
             String a = generateRandomPassword();
-            System.out.println(a);
             user_to_reset.setPassword(a);
-            System.out.println("pw changé");
             userService.updateUser(user_to_reset);
 //            jakartaEmail.sendMail("chenlaur@etu.utc.fr","chenlaur@etu.utc.fr","smtp1.utc.fr","DO NOT REPLY : TEST","COUCOU");
         }

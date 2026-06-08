@@ -1,10 +1,8 @@
 package fr.utc.sr03.controller;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import fr.utc.sr03.model.User;
 import fr.utc.sr03.services.UserService;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +16,7 @@ public class AdminController {
     @Resource
     private UserService userService;
 
-    @GetMapping
+    @GetMapping(value={"", "/"})
     public String homeAdmin(Model model) {
         List<User> users = userService.getAllUsers();
         model.addAttribute("popupMessage", "");
@@ -56,8 +54,6 @@ public class AdminController {
         else {
             retour = userService.updateUser(user);
         }
-        System.out.println("retour");
-        System.out.println(retour);
         switch (retour) {
             case -1:
                 model.addAttribute("popupMessage", "Mail invalide");

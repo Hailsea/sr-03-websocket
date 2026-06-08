@@ -13,9 +13,11 @@ import org.springframework.stereotype.Repository;
 public interface ChannelRepository extends JpaRepository<Channel, Integer> {
     boolean existsByTitle(String title);
 
+    boolean existsByTitleAndIdNot(String title, Integer id);
+
     Page<Channel> findByOwner(User owner, Pageable pageable);
 
-    @Query("SELECT c FROM User u JOIN u.channels c WHERE u = ?1")
+    SELECT c FROM User u JOIN u.channels c WHERE u = :user")
     Page<Channel> findByUserTarget(User user, Pageable pageable);
 
     @Query("SELECT i.channel FROM Invitation i WHERE i.userTarget = ?1 AND i.stateInitation = true")

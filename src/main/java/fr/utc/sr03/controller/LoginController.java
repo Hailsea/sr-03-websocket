@@ -28,17 +28,17 @@ public class LoginController {
 
     @PostMapping(value = "/login")
     public String login(Model model, HttpSession session, @ModelAttribute LoginDTO login) {
-        User user = authService.authenticate(login.getEmail(), login.getPassword());
-
-        if (user != null) {
+        try {
+            User user = authService.authenticate(login.getEmail(), login.getPassword());
             if (user.getAdmin()) {
                 session.setAttribute("user", user);
                 return "redirect:/admin";
             }
             return "redirect:http://localhost:5173";
+        } catch (Exception e) {
+            model.addAttribute("popupMessage", e.getMessage());
+            return "login";
         }
-        model.addAttribute("popupMessage","Mail ou mot de passe invalide.");
-        return "login";
     }
 
     @GetMapping(value="/resetPassword")

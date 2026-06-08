@@ -2,7 +2,6 @@
 
     import jakarta.persistence.*;
 
-    import java.util.ArrayList;
     import java.util.List;
 
     @Entity
@@ -117,4 +116,17 @@
             this.channels = channels;
         }
 
+        @Override
+        public String toString() {
+            return "User{" +
+                    "id=" + id +
+                    ", firstname='" + firstname + '\'' +
+                    ", lastname='" + lastname + '\'' +
+                    ", email='" + email + '\'' +
+                    ", password='" + password + '\'' +
+                    ", isAdmin=" + isAdmin +
+                    ", isAlive=" + isAlive +
+                    ", channels=" + channels +
+                    '}';
+        }
     }

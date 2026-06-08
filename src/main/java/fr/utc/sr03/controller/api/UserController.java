@@ -5,9 +5,11 @@ import fr.utc.sr03.model.User;
 import fr.utc.sr03.services.UserService;
 import jakarta.annotation.Resource;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -20,17 +22,25 @@ public class UserController {
     @Resource
     private ModelMapper modelMapper;
 
-    @GetMapping(value="/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable int id) {
-        User user = userService.getUserById(id);
-        if (user != null) {
-            return new ResponseEntity<>(
-                    modelMapper.map(user, UserDTO.class),
-                    HttpStatus.OK);
+    /* Avoir la liste des utilisateurs pour envoyer une invitation */
+    @GetMapping
+    public ResponseEntity<List<UserDTO>> getUsers(
+            @RequestParam(value = "exclude") Integer exclude) {
+
+        List<UserDTO> users = new ArrayList<>();
+        for (User user : userService.getAllUsers()) {
+            if (exclude != null && user.getId() == exclude) {
+                continue;
+            }
+            users.add(modelMapper.map(user, UserDTO.class));
         }
-        return ResponseEntity.notFound().build();
+
+        if (users.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(users);
     }
-    /* MAIL */
+
     /*@GetMapping(value = "/testmail")
     public void testmail(){
 

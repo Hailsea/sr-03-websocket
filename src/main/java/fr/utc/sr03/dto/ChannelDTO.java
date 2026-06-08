@@ -7,27 +7,31 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public class ChannelDTO {
-    @NotBlank(message = "Le titre du canal est obligatoire")
+
+    private Integer id;
+
+    @NotBlank(message = "Channel title is required")
     private String title;
 
     private String description;
 
-    @NotNull(message = "La date de début est obligatoire")
-    @FutureOrPresent(message = "La date de début doit être dans le présent ou le futur")
+    @NotNull(message = "begin date is required")
+    @FutureOrPresent(message = "begin date has to be in present or future")
     private LocalDateTime startChannel;
 
-    @NotNull(message = "La date de fin est obligatoire")
-    @Future(message = "La date de fin doit être dans le futur")
+    @NotNull(message = "end date is required ")
+    @Future(message = "end date has to be in future")
     private LocalDateTime endChannel;
 
     private LocalDateTime creationDate;
 
-    @NotNull(message = "L'identifiant du propriétaire est obligatoire")
+    @NotNull(message = "owner's id is required")
     private Integer ownerId;
 
     public ChannelDTO(){}
 
-    public ChannelDTO(String title, String description, LocalDateTime startChannel, LocalDateTime endChannel, LocalDateTime creationDate, int ownerId) {
+    public ChannelDTO(Integer id, String title, String description, LocalDateTime startChannel, LocalDateTime endChannel, LocalDateTime creationDate, Integer ownerId) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.startChannel = startChannel;
@@ -36,11 +40,19 @@ public class ChannelDTO {
         this.ownerId = ownerId;
     }
 
-    public String getTitle() {
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public @NotBlank(message = "Channel title is required") String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(@NotBlank(message = "Channel title is required") String title) {
         this.title = title;
     }
 
@@ -52,19 +64,19 @@ public class ChannelDTO {
         this.description = description;
     }
 
-    public LocalDateTime getStartChannel() {
+    public @NotNull(message = "begin date is required") @FutureOrPresent(message = "begin date has to be in present or future") LocalDateTime getStartChannel() {
         return startChannel;
     }
 
-    public void setStartChannel(LocalDateTime startChannel) {
+    public void setStartChannel(@NotNull(message = "begin date is required") @FutureOrPresent(message = "begin date has to be in present or future") LocalDateTime startChannel) {
         this.startChannel = startChannel;
     }
 
-    public LocalDateTime getEndChannel() {
+    public @NotNull(message = "end date is required ") @Future(message = "end date has to be in future") LocalDateTime getEndChannel() {
         return endChannel;
     }
 
-    public void setEndChannel(LocalDateTime endChannel) {
+    public void setEndChannel(@NotNull(message = "end date is required ") @Future(message = "end date has to be in future") LocalDateTime endChannel) {
         this.endChannel = endChannel;
     }
 
@@ -76,11 +88,11 @@ public class ChannelDTO {
         this.creationDate = creationDate;
     }
 
-    public int getOwnerId() {
+    public @NotNull(message = "owner's id is required") Integer getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(int ownerId) {
+    public void setOwnerId(@NotNull(message = "owner's id is required") Integer ownerId) {
         this.ownerId = ownerId;
     }
 }

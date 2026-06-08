@@ -3,15 +3,14 @@ package fr.utc.sr03.services;
 import fr.utc.sr03.model.Channel;
 import fr.utc.sr03.model.User;
 import fr.utc.sr03.repository.ChannelRepository;
-import fr.utc.sr03.repository.UserRepository;
+import fr.utc.sr03.repository.InvitationRepository;
 import jakarta.annotation.Resource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class ChannelService {
@@ -20,65 +19,81 @@ public class ChannelService {
     private ChannelRepository channelRepository;
 
     @Resource
+    private InvitationRepository invitationRepository;
+
+    @Resource
     private UserService userService;
 
-    public List<Channel> getChannelsByUserPaginated(int idUser, int page, int size) {
+    // TODO
+    public Page<Channel> getChannelsByUserPaginated(int idUser, int page, int size) {
         User user = userService.getUserById(idUser);
-        Page<Channel> pageResult = channelRepository.findByUserTarget(user, PageRequest.of(page, size));
-        return pageResult.getContent();
+        return user.getChannels();
     }
 
-    public List<Channel> getChannelsByOwnerPaginated(int idOwner, int page, int size) {
+    public Page<Channel> getChannelsByOwnerPaginated(int idOwner, int page, int size) {
         User user = userService.getUserById(idOwner);
-        Page<Channel> pageResult = channelRepository.findByOwner(user, PageRequest.of(page, size));
-        return pageResult.getContent();
+        return channelRepository.findByOwner(user, PageRequest.of(page, size));
     }
 
-    public List<Channel> getChannelsByInvitationPaginated(int idUser, int page, int size) {
+    public Page<Channel> getChannelsByInvitationPaginated(int idUser, int page, int size) {
         User user = userService.getUserById(idUser);
-        Page<Channel> pageResult = channelRepository.findByInvitation(user, PageRequest.of(page, size));
-        return pageResult.getContent();
+        return channelRepository.findByInvitation(user, PageRequest.of(page, size));
+    }
+
+    public Channel getChannelById(int id) {
+        return channelRepository.findById(id).orElse(null);
     }
 
     public Channel getOwnerChannelById(Integer idChannel, Integer idOwner) {
-        Channel channel = channelRepository.findById(idChannel).orElse(null);
+        Channel chan = channelRepository.findById(idChannel).orElse(null);
 
-        if (channel != null && channel.getOwner() != null && channel.getOwner().getId() == idOwner) {
-            return channel;
+        if (chan != null && chan.getOwner() != null && chan.getOwner().getId() == idOwner) {
+            return chan;
         }
         return null;
     }
 
     public Channel createChannel(Channel channel, int ownerId) {
         if (channelRepository.existsByTitle(channel.getTitle())) {
-            throw new IllegalArgumentException("Channel title already use");
+            throw new IllegalArgumentException("This title is already use");
         }
 
         User owner = userService.getUserById(ownerId);
         channel.setOwner(owner);
         channel.setCreationDate(LocalDateTime.now());
-        return channelRepository.save(channel);
+
+        Channel savedChannel = channelRepository.save(channel);
+        userService.joinChannel(owner, savedChannel);
+        return savedChannel;
     }
 
     public Channel updateChannel(Integer id, Channel channelToUpdate, Integer ownerId) {
-        if (!channelRepository.existsById(id)) {
+        Channel existing = channelRepository.findById(id).orElse(null);
+        if (existing == null) {
             return null;
         }
+
+        if (channelRepository.existsByTitleAndIdNot(channelToUpdate.getTitle(), id)) {
+            throw new IllegalArgumentException("This title is already use");
+        }
+
         channelToUpdate.setId(id);
 
         User owner = userService.getUserById(ownerId);
         channelToUpdate.setOwner(owner);
 
         if (channelToUpdate.getCreationDate() == null) {
-            channelToUpdate.setCreationDate(LocalDateTime.now());
+            channelToUpdate.setCreationDate(existing.getCreationDate());
         }
 
         return channelRepository.save(channelToUpdate);
     }
 
+    @Transactional
     public Channel deleteChannel(int id) {
         Channel channelToDelete = channelRepository.findById(id).orElse(null);
         if (channelToDelete != null) {
+            invitationRepository.deleteByChannelId(id); // supprime les invitations
             channelRepository.deleteById(id);
         }
         return channelToDelete;

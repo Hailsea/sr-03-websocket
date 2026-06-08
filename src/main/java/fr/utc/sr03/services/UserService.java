@@ -8,6 +8,7 @@ import fr.utc.sr03.repository.UserRepository;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,16 +41,11 @@ public class UserService {
     // UPDATE
     public int updateUser(User user) {
         User oldUser = getUserById(user.getId());
-        System.out.println("User:"+user);
-        System.out.println("Userid:"+user.getId());
-        System.out.println("Userpw:"+user.getPassword());
-        System.out.println(oldUser);
         if (oldUser != null) {
             oldUser.setLastname(user.getLastname());
             oldUser.setFirstname(user.getFirstname());
 
             if (user.getEmail() != null) {
-                System.out.println(user.getEmail());
                 if (!checkEmailFormat(user.getEmail())){
                     return -1;
                 }
@@ -88,4 +84,22 @@ public class UserService {
     public boolean checkPasswordFormat(String password){return password.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W)(.{8,})");}
 
     public boolean checkEmailFormat(String password){return password.matches("[a-zA-Z]\\w+(\\.\\w+)*@[a-zA-Z]+\\.[a-zA-Z]{1,3}");}
+
+    public void joinChannel(User user, Channel channel) {
+        if (user.getChannels() == null) {
+            user.setChannels(new ArrayList<>());
+        }
+
+        if (!user.getChannels().contains(channel)) {
+            user.getChannels().add(channel);
+        }
+        userRepository.save(user);
+    }
+
+    public void leaveChannel(User user, int channelId) {
+        if (user.getChannels() != null) {
+            user.getChannels().removeIf(c -> c.getId() != null && c.getId() == channelId);
+            userRepository.save(user);
+        }
+    }
 }
