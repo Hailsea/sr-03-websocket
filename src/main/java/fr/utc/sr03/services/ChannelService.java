@@ -27,7 +27,7 @@ public class ChannelService {
     // TODO
     public Page<Channel> getChannelsByUserPaginated(int idUser, int page, int size) {
         User user = userService.getUserById(idUser);
-        return channelRepository.findByUserTarget(user, PageRequest.of(page, size));
+        return channelRepository.findByUserTarget(user,PageRequest.of(page, size));
     }
 
     public Page<Channel> getChannelsByOwnerPaginated(int idOwner, int page, int size) {
