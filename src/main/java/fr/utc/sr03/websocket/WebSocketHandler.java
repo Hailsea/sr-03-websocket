@@ -5,6 +5,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+import org.springframework.web.util.UriComponentsBuilder;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -44,21 +45,23 @@ public class WebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws IOException {
         //On stocke la session du client dans une liste
-        // En l'absence de + opti on regex out l'id du channel
-//        System.out.println("here");
-//        System.out.println(session.getUri().toString());
-//        System.out.println(Pattern.compile("(?<=salon\\?id=)\\d+"));
-//        System.out.println(Pattern.compile("(?<=salon\\?id=)\\\\d+").matcher(session.getUri().toString()));
-//        System.out.println(Pattern.compile("(?<=salon\\?id=)\\d+").matcher(session.getUri().toString()).group());
-//        System.out.println("ended2");
-//        Integer channel_id= Integer.parseInt(Pattern.compile("(?<=salon\\?id=)\\d+").matcher(session.getUri().toString()).group());
-//        System.out.println("ended1");
-        String path=session.getUri().toString();
-        Integer channel_id=Character.getNumericValue(path.charAt(path.length()-1));
+        java.net.URI uri = session.getUri();
+        System.out.println(session);
+        String id_temp = null;
+        if (uri != null) {
+            id_temp = UriComponentsBuilder.fromUri(uri)
+                    .build()
+                    .getQueryParams()
+                    .getFirst("id");
+        }
+        if (id_temp==null){
+            logger.info("Id de channel inconnu");
+            throw new IOException("Id de channel inconnu");
+        }
+        Integer channel_id = Integer.parseInt(id_temp);
         sessions.computeIfAbsent(channel_id, k -> new ArrayList<>());
         sessions.get(channel_id).add(session);
         logger.info(session.getId());
-        System.out.println("ended");
 
         //J'affiche l'historique du salon
         //for(MessageSocket messageSocket : messageSocketsHistory){
@@ -82,11 +85,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
         System.out.println("broadcasted");
         System.out.println(sessions);
         if (sessions.get(channel_id)==null){
-            System.out.println("empty");
-            System.out.println(sessions);
-            System.out.println(sessions.get(5));
-            System.out.println(channel_id);
-            System.out.println(sessions.get(channel_id));
             return;
         }
         for (WebSocketSession session : sessions.get(channel_id)) {
