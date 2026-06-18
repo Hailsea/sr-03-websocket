@@ -21,8 +21,6 @@ public class AuthService {
 
     public User authenticate(String email, String password) {
         User user = userRepository.findByEmail(email);
-        System.out.println(user);
-        System.out.println(BCrypt.verifyer().verify(password.toCharArray(), user.getPassword()).verified);
         if (user == null || !BCrypt.verifyer().verify(password.toCharArray(), user.getPassword()).verified) {
             throw new UnauthorizedException("incorrect email or password");
         }
@@ -37,7 +35,6 @@ public class AuthService {
             int i = (int)Math.round(Math.floor(Math.random() * chars.length()));
             pw += chars.charAt(i);
         }
-        System.out.println(pw);
         return pw;
     }
 

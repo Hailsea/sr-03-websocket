@@ -76,11 +76,41 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    // Retourne les users selon le filtre
+    public List<User> getUsersByStatus(String status) {
+        return switch (status) {
+            case "active" -> userRepository.findByAlive(true);
+            case "inactive" -> userRepository.findByAlive(false);
+            default -> userRepository.findAll();
+        };
+    }
+
     // DELETE
-    public void deleteUser(int id) {
-        if (id != 1){
-            userRepository.deleteById(id);
+    public boolean deleteUser(int id) {
+        User user = getUserById(id);
+        if (user == null) {
+            return false;
         }
+        // Si l'utilisateur est admin et qu'il est le seul restant
+        if (user.getAdmin() && userRepository.countAdmins() <= 1) {
+            return false;
+        }
+        userRepository.deleteById(id);
+        return true;
+    }
+
+    public boolean toggleActive(int id, int currentUserId) {
+        User user = getUserById(id);
+        if (user == null) {
+            return false;
+        }
+        // Interdit de desactiver son propre compte
+        if (id == currentUserId && user.getAlive()) {
+            return false;
+        }
+        user.setAlive(!user.getAlive());
+        userRepository.save(user);
+        return true;
     }
 
     public boolean checkPasswordFormat(String password){return password.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W)(.{8,})");}

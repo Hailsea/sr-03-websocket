@@ -1,6 +1,5 @@
 package fr.utc.sr03.dto;
 import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -16,7 +15,6 @@ public class ChannelDTO {
     private String description;
 
     @NotNull(message = "begin date is required")
-    @FutureOrPresent(message = "begin date has to be in present or future")
     private LocalDateTime startChannel;
 
     @NotNull(message = "end date is required ")
@@ -64,11 +62,11 @@ public class ChannelDTO {
         this.description = description;
     }
 
-    public @NotNull(message = "begin date is required") @FutureOrPresent(message = "begin date has to be in present or future") LocalDateTime getStartChannel() {
+    public @NotNull(message = "begin date is required") LocalDateTime getStartChannel() {
         return startChannel;
     }
 
-    public void setStartChannel(@NotNull(message = "begin date is required") @FutureOrPresent(message = "begin date has to be in present or future") LocalDateTime startChannel) {
+    public void setStartChannel(@NotNull(message = "begin date is required") LocalDateTime startChannel) {
         this.startChannel = startChannel;
     }
 

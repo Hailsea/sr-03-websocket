@@ -66,6 +66,10 @@
                 <input type="hidden" name="email" th:value="${user.email}"/>
                 <button type="submit">[ Réinitialiser mot de passe ]</button>
             </form>
+            <form th:action="@{/admin/toggleactive}" th:method="POST" class="button btn-classic">
+                <input type="hidden" name="idUser" th:value="${user.id}"/>
+                <button type="submit" th:text="${user.alive} ? '[ Désactiver ]' : '[ Activer ]'"></button>
+            </form>
         </div>
 
     </div>

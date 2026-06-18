@@ -18,11 +18,6 @@ import java.util.List;
 @Service
 public class InvitationService {
 
-    // Etat d'une invitation (stateInitation) :
-    //   null  = en attente (PENDING)
-    //   true  = acceptee   (ACCEPTED)
-    //   false = refusee    (REFUSED)
-
     @Resource
     private InvitationRepository invitationRepository;
 

@@ -10,8 +10,29 @@
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#users').DataTable();
-        } );
+            // 'tip' = tableau + info + pagination uniquement.
+            // La recherche et le filtre statut sont places dans la barre d'outils (au-dessus)
+            // pour maitriser la mise en page et rester dans le theme.
+            var table = $('#users').DataTable({
+                dom: 'tip',
+                language: {
+                    info: 'Affichage de _START_ à _END_ sur _TOTAL_ utilisateurs',
+                    infoEmpty: 'Aucun utilisateur',
+                    infoFiltered: '(filtré sur _MAX_ au total)',
+                    emptyTable: 'Aucun utilisateur en base',
+                    zeroRecords: 'Aucun résultat',
+                    paginate: { previous: 'Précédent', next: 'Suivant' }
+                }
+            });
+            // Recherche en direct, branchée sur le moteur de DataTables
+            $('#userSearch').on('keyup', function() {
+                table.search(this.value).draw();
+            });
+            // Nombre de lignes par page (remplace le "Show N entries" par defaut)
+            $('#pageLen').on('change', function() {
+                table.page.len(parseInt(this.value, 10)).draw();
+            });
+        });
     </script>
 
 </head>
@@ -29,6 +50,44 @@
         </div>
         <div>
             <a href="/admin/adduser" class="button btn-add">[ + AJOUTER ]</a>
+        </div>
+    </div>
+
+    <!-- Barre d'outils : utilisateur connecte + filtre statut + recherche -->
+    <div class="toolbar">
+        <p class="current-user">
+            Connecté en tant que
+            <strong th:text="${currentUser.firstname + ' ' + currentUser.lastname}">Admin</strong>
+            <span class="current-user-mail" th:text="${currentUser.email}"></span>
+        </p>
+
+        <div class="toolbar-controls">
+            <!-- Filtre statut : recharge la liste avec ?status=... (auto-submit au changement) -->
+            <form th:action="@{/admin}" method="GET" class="control">
+                <label for="status">Statut</label>
+                <select id="status" name="status" class="field" onchange="this.form.submit()">
+                    <option value="all"      th:selected="${status == 'all'}">Tous</option>
+                    <option value="active"   th:selected="${status == 'active'}">Actifs</option>
+                    <option value="inactive" th:selected="${status == 'inactive'}">Désactivés</option>
+                </select>
+            </form>
+
+            <!-- Recherche : filtre cote client via DataTables -->
+            <div class="control">
+                <label for="userSearch">Recherche</label>
+                <input type="text" id="userSearch" class="field" placeholder="Nom, prénom, email...">
+            </div>
+
+            <!-- Nombre de lignes par page : branche sur DataTables (remplace le "Show entries") -->
+            <div class="control">
+                <label for="pageLen">Par page</label>
+                <select id="pageLen" class="field">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
         </div>
     </div>
 
@@ -69,11 +128,10 @@
                         <input type="hidden" name="email" th:value="${user.email}"/>
                         <button type="submit">[ Réinitialiser mot de passe ]</button>
                     </form>
-                </td>
-            </tr>
-            <tr th:if="${#lists.isEmpty(allUsers)}">
-                <td>
-                    Aucun utilisateur en base
+                    <form th:action="@{/admin/toggleactive}" th:method="POST" class="button btn-classic">
+                        <input type="hidden" name="idUser" th:value="${user.id}"/>
+                        <button type="submit" th:text="${user.getAlive()} ? '[ Désactiver ]' : '[ Activer ]'"></button>
+                    </form>
                 </td>
             </tr>
             </tbody>

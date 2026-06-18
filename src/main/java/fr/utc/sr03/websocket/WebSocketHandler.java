@@ -1,8 +1,6 @@
 package fr.utc.sr03.websocket;
 
-import at.favre.lib.bytes.Bytes;
 import fr.utc.sr03.model.User;
-import jakarta.annotation.Resource;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -15,7 +13,6 @@ import fr.utc.sr03.services.UserService;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
