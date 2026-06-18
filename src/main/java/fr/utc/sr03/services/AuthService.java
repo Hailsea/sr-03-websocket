@@ -3,6 +3,7 @@ package fr.utc.sr03.services;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import fr.utc.sr03.exception.UnauthorizedException;
 import fr.utc.sr03.model.User;
+import fr.utc.sr03.services.JakartaEmail;
 import fr.utc.sr03.repository.UserRepository;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,9 @@ public class AuthService {
     private UserRepository userRepository;
 
     @Resource
-    private  UserService userService;
+    private UserService userService;
+
+    private JakartaEmail jakartaEmail=new JakartaEmail("testSR03@gmx.fr","y.L4i#m&i3Qw>-%");
 
     public User authenticate(String email, String password) {
         User user = userRepository.findByEmail(email);
@@ -44,7 +47,7 @@ public class AuthService {
             String a = generateRandomPassword();
             user_to_reset.setPassword(a);
             userService.updateUser(user_to_reset);
-//            jakartaEmail.sendMail("chenlaur@etu.utc.fr","chenlaur@etu.utc.fr","smtp1.utc.fr","DO NOT REPLY : TEST","COUCOU");
+            jakartaEmail.sendMail("testSR03@gmx.fr","testSR03@gmx.fr","mail.gmx.net","587","[DO NOT REPLY] Password reset",String.format("Vous avez demandez une réinitialisation de votre mot de passe. Si vous n'en étiez pas à l'origine. Tant pis.\n Votre nouveau mot de passe : %s", a));
         }
     }
 

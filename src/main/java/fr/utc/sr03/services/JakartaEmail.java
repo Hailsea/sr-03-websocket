@@ -4,12 +4,16 @@ import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
-
 import java.util.Properties;
 
-public class JakartaEmail {
 
-    public JakartaEmail() {
+public class JakartaEmail {
+    private final String login;
+    private final String password;
+
+    public JakartaEmail(String login, String password) {
+        this.login=login;
+        this.password=password;
     }
 
     public void sendMailTest(){
@@ -36,13 +40,20 @@ public class JakartaEmail {
         }
     }
 
-    public void sendMail(String to,String from,String host,String subject, String content){
+    public void sendMail(String to,String from,String host,String port,String subject, String content){
         Properties props = new Properties();
         props.put("mail.smtp.host", host);
-        props.put("mail.smtp.port", "25");
+        props.put("mail.smtp.port", port);
         props.put("mail.debug", "true");
-
-        Session session = Session.getInstance(props, null);
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        PasswordAuthentication pwAuth=new PasswordAuthentication(login,password);
+        Session session = Session.getInstance(props, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(login, password);
+            }
+        });
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
