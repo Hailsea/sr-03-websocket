@@ -66,7 +66,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
                 logger.info("Id de channel inconnu");
                 throw new IOException("Id de channel inconnu");
             }
-            //obsolete?
             channel_id = Integer.parseInt(channel_id_temp);
             if (user_id_temp==null){
                 logger.info("User_id inconnu");
@@ -88,6 +87,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
+        //remove the session for each channels
         sessions.forEach((id,session_list)->
             session_list.remove(session));
         logger.info("Déconnecté du " + this.nameChat);
@@ -96,18 +96,13 @@ public class WebSocketHandler extends TextWebSocketHandler {
     public void broadcast(MessageSocket messageSocket) throws IOException {
         int channel_id=messageSocket.getChannel_id();
         int user_id=messageSocket.getUser_id();
-        System.out.println("broadcasted");
         if (sessions.get(channel_id)==null){
             return;
         }
+        //send to everyone
         for (WebSocketSession session : sessions.get(channel_id)) {
             User user = userService.getUserById(user_id);
-            System.out.println("user_id");
-            System.out.println(user_id);
-            System.out.println(user);
-            //JSON.stringify()
             String payload=String.format("{\"l_name\":\"%s\", \"f_name\":\"%s\",\"message\":\"%s\",\"files\":%s}",user.getLastname(),user.getFirstname(),messageSocket.getMessage(),messageSocket.getFilesString());
-            System.out.println(payload);
             session.sendMessage(new TextMessage(payload));
         }
     }

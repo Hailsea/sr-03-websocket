@@ -31,6 +31,6 @@ public class FileData {
 
     @Override
     public String toString(){
-        return String.format("{name=\"%s\", type=\"%s\",data=\"%s\"}",name, type,data);
+        return String.format("{\"name\":\"%s\", \"type\":\"%s\",\"data\":\"%s\"}",name, type,data);
     }
 }
