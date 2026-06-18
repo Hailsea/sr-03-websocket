@@ -44,7 +44,7 @@
             <label>Canaux (Channels)</label>
             <div>
                 <ul th:if="${!user.channels.isEmpty()}">
-                    <li th:each="channel : ${user.channels}" th:text="${channel.name}">Nom du channel</li>
+                    <li th:each="channel : ${user.channels}" th:text="${channel.title}">Nom du channel</li>
                 </ul>
                 <span th:if="${user.channels.isEmpty()}">
                     Aucun channel

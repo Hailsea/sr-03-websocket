@@ -19,7 +19,7 @@ public class AuthService {
     public User authenticate(String email, String password) {
         User user = userRepository.findByEmail(email);
 
-        if (user == null && !BCrypt.verifyer().verify(password.toCharArray(), user.getPassword()).verified) {
+        if (user == null || !BCrypt.verifyer().verify(password.toCharArray(), user.getPassword()).verified) {
             throw new UnauthorizedException("incorrect email or password");
         }
         return user;
