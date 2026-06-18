@@ -4,6 +4,12 @@
 
     import java.util.List;
 
+    /**
+     * Entité JPA représentant un utilisateur (table "user_table").
+     *
+     * Un utilisateur peut etre administrateur (isAdmin) et appartenir a plusieurs
+     * salons via la table de jointure "user_in_channel" (relation @ManyToMany).
+     */
     @Entity
     @Table(name="user_table")
     public class User {

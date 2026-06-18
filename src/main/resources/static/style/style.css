@@ -142,7 +142,9 @@ input[type="reset"] {
 
 .btn-add { background-color: #0056b3; }
 .btn-add:hover { background-color: #004494; }
-
+a:hover {
+    color: white;
+}
 /* --- En-tête de section (titre + bouton d'action) --- */
 .header-row {
     display: flex;
