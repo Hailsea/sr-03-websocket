@@ -37,7 +37,9 @@
         @Column(name="is_alive", nullable = false)
         private Boolean isAlive = false;
 
-        @ManyToMany
+        //otherwise crash on receiving websocket
+        //careful when dealing with too many users
+        @ManyToMany(fetch=FetchType.EAGER)
         @JoinTable(
                 name = "user_in_channel",
                 joinColumns = @JoinColumn(name = "id_user"),
