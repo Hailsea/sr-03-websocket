@@ -1,15 +1,41 @@
+/* ============================================================
+   SR03 - Feuille de style commune
+   Thème "terminal" : fond jaune (#eab024) + encadrés noirs (#333)
+   ============================================================ */
+
+/* --- Reset / base --- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box; /* la largeur inclut padding + bordure (clé du responsive) */
+}
+
 body {
     background-color: #eab024;
     font-family: monospace;
     color: #333;
+    margin: 0;
     padding: 20px;
+    min-height: 100vh;
 }
 
+/* Centrage vertical + horizontal d'un contenu (pages login / reset password) */
+.center-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 40px); /* 100vh moins le padding du body */
+}
+
+/* --- Cartes / conteneurs --- */
 .card {
     background-color: #f8f9fa;
     padding: 2rem;
-    box-shadow: 6px 6px rgba(0,0,0,0.2);
+    border: 2px solid #333;
     margin: 0 auto;
+    width: 100%;
+    max-width: 500px; /* valeur par défaut, surchargée ci-dessous */
 }
 
 .form-card {
@@ -30,6 +56,7 @@ h2 {
     text-align: center;
 }
 
+/* --- Formulaires --- */
 .input-group {
     margin-bottom: 15px;
 }
@@ -47,7 +74,6 @@ input {
     border: 1px solid #333;
     background: #fff;
     font-family: monospace;
-    box-sizing: border-box;
     outline: none;
 }
 
@@ -55,12 +81,29 @@ input:focus {
     background-color: #eab024;
 }
 
+/* Lien secondaire sous un formulaire (ex. "Mot de passe oublié ?") */
+.form-link {
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+    font-size: 12px;
+    color: #333;
+}
+
+.form-link:hover {
+    color: #000;
+}
+
+/* --- Boutons --- */
 .button-group {
     display: flex;
+    flex-wrap: wrap; /* les boutons passent à la ligne plutôt que de déborder */
     gap: 10px;
 }
 
-button, input[type="submit"], input[type="reset"] {
+button,
+input[type="submit"],
+input[type="reset"] {
     background: none;
     color: inherit;
     border: none;
@@ -78,46 +121,56 @@ button, input[type="submit"], input[type="reset"] {
     font-family: monospace;
     font-size: 14px;
     margin-top: 10px;
-    transition: 0.2s;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
-    box-sizing: border-box;
     color: #fff;
 }
-.btn-classic {
-    background-color: #555; /* Gris foncé */
+
+/* Dans un groupe, les boutons se partagent la largeur disponible */
+.button-group .button {
+    width: auto;
+    flex: 1 1 auto;
+    margin-top: 0;
 }
 
-.btn-classic:hover {
-    background-color: #333;
-}
+.btn-classic { background-color: #555; }
+.btn-classic:hover { background-color: #333; }
 
-.btn-update {
-    background-color: #2e7d32; /* Vert "système" */
-}
+.btn-update { background-color: #2e7d32; }
+.btn-update:hover { background-color: #1b5e20; }
 
-.btn-update:hover {
-    background-color: #1b5e20;
-}
+.btn-add { background-color: #0056b3; }
+.btn-add:hover { background-color: #004494; }
 
-.btn-add {
-    background-color: #0056b3; /* Bleu assez vif */
-}
-
-.btn-add:hover {
-    background-color: #004494;
-}
-
-/* TABLEAU */
-
+/* --- En-tête de section (titre + bouton d'action) --- */
 .header-row {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
     margin-bottom: 2rem;
     border-bottom: 3px solid #333;
     padding-bottom: 1rem;
+}
+
+.header-row h1 {
+    margin: 0;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+}
+
+.header-row .button {
+    width: auto;
+    margin-top: 0;
+}
+
+/* --- Tableau --- */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto; /* défilement horizontal au lieu de déborder sur petit écran */
+    -webkit-overflow-scrolling: touch;
 }
 
 table {
@@ -133,6 +186,7 @@ th {
     padding: 15px;
     text-transform: uppercase;
     font-size: 0.9rem;
+    white-space: nowrap;
 }
 
 td {
@@ -143,11 +197,31 @@ td {
 
 tr:hover { background-color: #eab024; }
 
-/* TITRE */
+/* Boutons d'action compacts dans une cellule de tableau */
+td.button-group {
+    gap: 6px;
+}
+
+td.button-group .button {
+    padding: 6px 10px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+td.button-group form {
+    margin: 0;
+}
+
+/* --- Titre principal (avec bouton déconnexion) --- */
 .main-title {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
     max-width: 1000px;
     margin: 0 auto 20px auto;
-    padding: 1rem 2rem 1rem 2rem;
+    padding: 1rem 2rem;
     border: 3px solid #333;
     background-color: #333;
     color: #eab024;
@@ -158,4 +232,65 @@ tr:hover { background-color: #eab024; }
     font-size: 20px;
     text-transform: uppercase;
     letter-spacing: 2px;
+}
+
+.main-title .button {
+    width: auto;
+    margin-top: 0;
+}
+
+/* Bouton déconnexion : contour jaune sur fond sombre */
+.btn-logout {
+    background: transparent;
+    color: #eab024;
+    border: 2px solid #eab024;
+}
+
+.btn-logout:hover {
+    background: #eab024;
+    color: #333;
+}
+
+/* --- Popup / message d'avertissement --- */
+.popup {
+    max-width: 1000px;
+    margin: 0 auto 20px auto;
+    padding: 12px 16px;
+    background-color: #fff3cd;
+    border: 2px solid #333;
+    border-left: 6px solid #d39e00;
+}
+
+.popup p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+/* Tablettes / petits écrans */
+@media (max-width: 768px) {
+    body { padding: 12px; }
+
+    .center-screen { min-height: calc(100vh - 24px); }
+
+    .card { padding: 1.5rem; }
+
+    .main-title { padding: 0.75rem 1rem; }
+    .main-title h1 { font-size: 16px; letter-spacing: 1px; }
+
+    th, td { padding: 10px; font-size: 0.8rem; }
+}
+
+/* Téléphones */
+@media (max-width: 480px) {
+    h2 { font-size: 16px; }
+
+    /* Les boutons d'un groupe s'empilent verticalement... */
+    .button-group { flex-direction: column; }
+
+    /* ...y compris les actions du tableau (plus lisible que côte à côte) */
+    td.button-group .button { flex: 1 1 100%; }
 }

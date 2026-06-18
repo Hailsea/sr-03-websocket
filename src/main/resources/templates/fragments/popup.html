@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Warning popup</title>
 </head>
 <body>
-    <div class="popup" th:fragment="warningPopup(popupMessage)">
-        <a>
-            <p th:text="${popupMessage}"></p>
-        </a>
+    <div class="popup" th:fragment="warningPopup(popupMessage)" th:if="${!#strings.isEmpty(popupMessage)}">
+        <p th:text="${popupMessage}"></p>
     </div>
 </body>
 </html>

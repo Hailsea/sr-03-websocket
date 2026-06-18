@@ -1,11 +1,13 @@
 package fr.utc.sr03.controller;
 
 import fr.utc.sr03.model.User;
+import fr.utc.sr03.services.AuthService;
 import fr.utc.sr03.services.UserService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -16,10 +18,12 @@ public class AdminController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private AuthService authService;
+
     @GetMapping(value={"", "/"})
     public String homeAdmin(Model model) {
         List<User> users = userService.getAllUsers();
-        model.addAttribute("popupMessage", "");
         model.addAttribute("allUsers", users);
         return "admin/homeAdmin";
     }
@@ -87,6 +91,13 @@ public class AdminController {
     @PostMapping("/deleteuser")
     public String deleteUser(@RequestParam int idUser){
         userService.deleteUser(idUser);
+        return "redirect:/admin/";
+    }
+
+    @PostMapping("/resetpassword")
+    public String resetUserPassword(@RequestParam String email, RedirectAttributes redirectAttributes) {
+        authService.resetPassword(email);
+        redirectAttributes.addFlashAttribute("popupMessage", "Mot de passe réinitialisé pour " + email);
         return "redirect:/admin/";
     }
 }

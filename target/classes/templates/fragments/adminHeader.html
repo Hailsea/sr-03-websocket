@@ -3,7 +3,10 @@
 
 <body>
 <header th:fragment="adminHeader" class="main-title">
-    <h1 class="">Interface Admin</h1>
+    <h1>Interface Admin</h1>
+    <form th:action="@{/logout}" method="POST">
+        <button type="submit" class="button btn-logout">[ Déconnexion ]</button>
+    </form>
 </header>
 </body>
 </html>

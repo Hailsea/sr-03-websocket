@@ -78,7 +78,9 @@ public class UserService {
 
     // DELETE
     public void deleteUser(int id) {
-        userRepository.deleteById(id);
+        if (id != 1){
+            userRepository.deleteById(id);
+        }
     }
 
     public boolean checkPasswordFormat(String password){return password.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W)(.{8,})");}

@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <div class="">
+    <div class="table-responsive">
         <table id="users" class="table-striped">
             <thead>
             <tr>
@@ -65,7 +65,7 @@
                         <input type="hidden" name="idUser" th:value="${user.id}"/>
                         <button type="submit">[ Supprimer ]</button>
                     </form>
-                    <form th:action="@{/resetPassword}" th:method="POST" class="button btn-classic">
+                    <form th:action="@{/admin/resetpassword}" th:method="POST" class="button btn-classic">
                         <input type="hidden" name="email" th:value="${user.email}"/>
                         <button type="submit">[ Réinitialiser mot de passe ]</button>
                     </form>

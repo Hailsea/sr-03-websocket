@@ -1,23 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+    <link th:href="@{/style/style.css}" rel="stylesheet">
 </head>
 <body>
+<main class="center-screen">
 
-<header th:replace="~{fragments/popup.html :: warningPopup(${popupMessage})}"></header>
+    <div th:replace="~{fragments/popup.html :: warningPopup(${popupMessage})}"></div>
 
-<form th:action="@{/login}" method="POST">
-    <label for="email">Email</label>
-    <input type="text" placeholder="Enter Email" name="email" id="email" required>
+    <div class="card form-card">
+        <h2>Connexion</h2>
 
-    <label for="password">Password</label>
-    <input type="password" placeholder="Enter Password" name="password" id="password" required>
+        <form th:action="@{/login}" method="POST">
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Entrez votre email" required>
+            </div>
 
-    <button type="submit">Register</button>
+            <div class="input-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" placeholder="Entrez votre mot de passe" required>
+            </div>
 
-    <a href="/resetPassword">Mot de passe oublié?</a>
-</form>
+            <button type="submit" class="button btn-add">[ Se connecter ]</button>
+
+            <a th:href="@{/resetPassword}" class="form-link">Mot de passe oublié ?</a>
+        </form>
+    </div>
+
+</main>
 </body>
 </html>
